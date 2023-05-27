@@ -26,6 +26,13 @@ export default {
       zIndex: {
         1: 1,
       },
+      fontFamily: {
+        raleway: "'Raleway', sans-serif",
+        poppins: "'Poppins', sans-serif",
+      },
+      transitionDuration: {
+        inherit: "inherit",
+      },
     },
   },
   plugins: [],

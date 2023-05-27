@@ -4,10 +4,21 @@
 
 @layer base {
   html {
-    @apply bg-background text-front;
+    @apply bg-background text-front font-poppins;
   }
   body {
     @apply p-0 m-0;
+  }
+}
+
+@layer components {
+  .btn-1 {
+    @apply;
+  }
+
+  .btn-2 {
+    @apply text-primary relative border-2 border-primary rounded-md before:content-visible before:absolute before:absolute-center before:-z-1 before:w-0 before:h-0 duration-300
+    before:rounded-[100%] before:bg-primary before:duration-inherit hover:before:w-full hover:before:h-full hover:before:scale-[101%] hover:before:rounded-none hover:text-back;
   }
 }
 
@@ -20,6 +31,10 @@
   }
 
   .p-page {
-    @apply px-[10vw];
+    @apply px-[8vw];
+  }
+
+  .absolute-center {
+    @apply top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
   }
 }
