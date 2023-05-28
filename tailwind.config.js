@@ -8,7 +8,7 @@ export default {
         widescreen: { min: "780px" },
       },
       colors: {
-        primary: "#31ad5d",
+        primary: "#219d4d",
         secondary: "#ebab2d",
         tertiary: "#51dd8e",
         background: "#ffffff",
