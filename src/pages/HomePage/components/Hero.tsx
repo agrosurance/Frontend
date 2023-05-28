@@ -38,19 +38,19 @@ export default function Hero() {
           </div>
           <div className="flex max-w-[45%] gap-x-5">
             <img
-              src="https://cryptologos.cc/logos/chainlink-link-logo.png?v=025"
+              src="/logo.png"
               alt="chainlink"
               className="aspect-square brightness-0 opacity-50 w-14"
             />
             <p className="text-sm text-front text-opacity-50">
-              We calculate our quotes based on real time data collected ON CHAIN
+              Our stakers help us maintain liquidity and get duely REWARDED
             </p>
           </div>
         </div>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center">
         <div
-          className="w-[80%] h-[90%] bg-primary rounded-t-full rounded-bl-full rounded-br-[130rem] 
+          className="w-[80%] h-[95%] bg-primary rounded-t-full rounded-bl-full rounded-br-[145rem] 
         bg-[url('https://images.unsplash.com/photo-1536147210925-5cb7a7a4f9fe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z3JlZW4lMjBwbGFudHxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80')]"
         ></div>
       </div>
