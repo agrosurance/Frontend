@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
+import { useForceUpdate } from "../hooks/useForceUpdate";
 
 const navItems = [
   { title: "About Us", to: "/abo  ut" },
@@ -8,18 +9,24 @@ const navItems = [
   { title: "Contact", to: "/contact" },
 ];
 
-const hiddenAt = ['/auth']
+const hiddenAt = ["/auth"];
 
 export default function Navbar() {
-  const [hideNav,setHideNav] = useState(false)
+  const [hideNav, setHideNav] = useState(false);
 
+  const location = useLocation();
 
-  useEffect(()=>{
-    setHideNav(hiddenAt.includes(location.pathname))
-  },[])
+  useEffect(() => {
+    setHideNav(hiddenAt.includes(location.pathname));
+  }, [location]);
 
   return (
-    <nav className={twMerge("p-page py-12 flex justify-center text-front text-opacity-70 font-medium tracking-tight text-[15px]",hideNav ? 'hidden' :"")}>
+    <nav
+      className={twMerge(
+        "p-page py-12 flex justify-center text-front text-opacity-70 font-medium tracking-tight text-[15px]",
+        hideNav ? "hidden" : ""
+      )}
+    >
       <div className="flex-1 flex items-center gap-x-14">
         {navItems.map((item, i) => (
           <Link
