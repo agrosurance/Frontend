@@ -9,18 +9,23 @@ import Footer from "./common/Footer";
 import Navbar from "./common/Navbar";
 import HomePage from "./pages/HomePage/HomePage";
 import AuthPage from "./pages/AuthPage/AuthPage";
+import { GlobalContextProvider } from "./contexts/globalContext";
 
 export default function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Root />}>
         <Route index element={<HomePage />} />
-        <Route path="/auth" element={<AuthPage/>} />
+        <Route path="/auth" element={<AuthPage />} />
       </Route>
     )
   );
 
-  return <RouterProvider router={router} />;
+  return (
+    <GlobalContextProvider>
+      <RouterProvider router={router} />;
+    </GlobalContextProvider>
+  );
 }
 
 function Root() {
