@@ -1,4 +1,6 @@
-import useFetch from "../../hooks/useFetch";
+import Graph from "./components/Graph";
+import Chart from "chart.js/auto";
+import { CategoryScale } from "chart.js";
 
 interface Product {
   id: number;
@@ -9,6 +11,18 @@ interface Product {
   image: string;
   rating: { rate: number; count: number };
 }
+
+Chart.register(CategoryScale);
+
+const chartData = {
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+  // datasets is an array of objects where each object represents a set of data to display corresponding to the labels above. for brevity, we'll keep it at one object
+  datasets: [
+    {
+      data: [55, 43, 56, 45, 38, 48],
+    },
+  ],
+};
 
 export default function StakingPage() {
   return (
@@ -35,8 +49,22 @@ export default function StakingPage() {
           </div>
         </div>
       </section>
-      <section className="my-3 flex">
-        <div className=""></div>
+      <section className="my-14 flex justify-between p-page">
+        <div className="flex flex-col items-center w-[49%] bg-foreground bg-opacity-10 p-8 rounded-[3rem]">
+          <div
+            className="bg-foreground bg-opacity-70 aspect-square rounded-full w-[70%] flex flex-col items-center gap-y-3 justify-center text-back tracking-tight 
+          font-medium font-raleway text-xl text-opacity-80"
+          >
+            <p>Staked Value</p>
+            <h5 className="text-7xl font-poppins bg-clip-text bg-gradient-to-br text-back text-opacity-100">
+              {420.911}
+            </h5>
+            <p>ETH</p>
+          </div>
+        </div>
+        <div className="flex flex-col items-center justify-center w-[49%] bg-foreground bg-opacity-10 rounded-[3rem] p-8">
+          {<Graph chartData={chartData} />}
+        </div>
       </section>
     </>
   );
