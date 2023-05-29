@@ -34,6 +34,22 @@ export default function StakingPage() {
             </button>
           </div>
         </div>
+        <div className="m-20 w-[33%] p-10 flex flex-col rounded-lg border border-primary gap-y-6">
+          <h1 className="self-center text-2xl font-bold text-primary">
+            Overview
+          </h1>
+          <div>
+            <h4 className="text-md font-medium">Stakes</h4>
+            <div className="flex flex-row items-center border-front border border-opacity-50 rounded-xl">
+              <span className="text-4xl py-2 px-2 border border-r-front"></span>
+              <input
+                type="number"
+                placeholder="Enter the number of stakes"
+                className="text-md px-2 w-full"
+              />
+            </div>
+          </div>
+        </div>
       </section>
       <section className="my-3 flex">
         <div className=""></div>
