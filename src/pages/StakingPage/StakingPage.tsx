@@ -62,8 +62,9 @@ export default function StakingPage() {
       <section className="my-14 flex justify-between p-page">
         <div className="flex flex-col items-center w-[49%] bg-foreground bg-opacity-10 p-8 rounded-[3rem]">
           <div
-            className="bg-foreground bg-opacity-70 aspect-square rounded-full min-w-[60%] flex flex-col items-center gap-y-3 justify-center text-back tracking-tight 
-          font-medium font-raleway text-xl text-opacity-80"
+            className="bg-foreground relative bg-opacity-70 aspect-square rounded-full min-w-[60%] flex flex-col items-center gap-y-3 justify-center text-back tracking-tight 
+          font-medium font-raleway text-xl text-opacity-80 before:content-visible before:absolute-center before:w-full before:h-full before:rounded-full before:border-primary
+          before:scale-110 before:border-[8px]"
           >
             <p>Staked Value</p>
             <h5 className="text-7xl font-poppins bg-clip-text bg-gradient-to-br text-back text-opacity-100">

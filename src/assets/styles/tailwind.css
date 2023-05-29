@@ -10,8 +10,8 @@
     @apply p-0 m-0;
   }
 
-  input{
-    @apply outline-none border-none
+  input {
+    @apply outline-none border-none;
   }
 }
 
@@ -39,6 +39,6 @@
   }
 
   .absolute-center {
-    @apply top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
   }
 }
