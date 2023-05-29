@@ -1,6 +1,7 @@
 import Graph from "./components/Graph";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
+import useModal from "../../hooks/useModal";
 
 interface Product {
   id: number;
@@ -25,6 +26,8 @@ const chartData = {
 };
 
 export default function StakingPage() {
+  const modal = useModal();
+
   return (
     <>
       <section className="p-page">
@@ -43,7 +46,14 @@ export default function StakingPage() {
             <button className="flex gap-x-1 items-center border border-secondary px-5 py-1 bg-secondary bg-opacity-10 text-secondary rounded-lg tracking-tight font-medium duration-500 hover:bg-opacity-100 hover:text-background">
               <span className="material-icons text-3xl">&#xe8fb;</span> Withdraw
             </button>
-            <button className="flex gap-x-1 items-center border border-primary px-5 py-1 bg-primary bg-opacity-10 text-primary rounded-lg tracking-tight font-medium duration-500 hover:bg-opacity-100 hover:text-background">
+            <button
+              className="flex gap-x-1 items-center border border-primary px-5 py-1 bg-primary bg-opacity-10 text-primary rounded-lg tracking-tight font-medium duration-500 hover:bg-opacity-100 hover:text-background"
+              onClick={() =>
+                modal.show(
+                  <div className="bg-white p-6">mai hu ghatotkach</div>
+                )
+              }
+            >
               <span className="material-icons text-3xl">&#xe147;</span> Stake
             </button>
           </div>
@@ -81,14 +91,14 @@ export default function StakingPage() {
       <section className="my-14 flex justify-between p-page">
         <div className="flex flex-col items-center w-[49%] bg-foreground bg-opacity-10 p-8 rounded-[3rem]">
           <div
-            className="bg-foreground bg-opacity-70 aspect-square rounded-full w-[70%] flex flex-col items-center gap-y-3 justify-center text-back tracking-tight 
+            className="bg-foreground bg-opacity-70 aspect-square rounded-full min-w-[60%] flex flex-col items-center gap-y-3 justify-center text-back tracking-tight 
           font-medium font-raleway text-xl text-opacity-80"
           >
             <p>Staked Value</p>
             <h5 className="text-7xl font-poppins bg-clip-text bg-gradient-to-br text-back text-opacity-100">
               {420.911}
             </h5>
-            <p>ETH</p>
+            <p>MATIC</p>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center w-[49%] bg-foreground bg-opacity-10 rounded-[3rem] p-8">
