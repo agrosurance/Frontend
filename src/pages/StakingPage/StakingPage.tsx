@@ -2,6 +2,7 @@ import Graph from "./components/Graph";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 import useModal from "../../hooks/useModal";
+import StakingModal from "./components/StakingModal";
 
 interface Product {
   id: number;
@@ -48,11 +49,7 @@ export default function StakingPage() {
             </button>
             <button
               className="flex gap-x-1 items-center border border-primary px-5 py-1 bg-primary bg-opacity-10 text-primary rounded-lg tracking-tight font-medium duration-500 hover:bg-opacity-100 hover:text-background"
-              onClick={() =>
-                modal.show(
-                  <div className="bg-white p-6">mai hu ghatotkach</div>
-                )
-              }
+              onClick={() => modal.show(<StakingModal />)}
             >
               <span className="material-icons text-3xl">&#xe147;</span> Stake
             </button>
