@@ -2,6 +2,7 @@ import Graph from "./components/Graph";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 import useModal from "../../hooks/useModal";
+import StakingModal from "./components/StakingModal";
 
 interface Product {
   id: number;
@@ -48,43 +49,10 @@ export default function StakingPage() {
             </button>
             <button
               className="flex gap-x-1 items-center border border-primary px-5 py-1 bg-primary bg-opacity-10 text-primary rounded-lg tracking-tight font-medium duration-500 hover:bg-opacity-100 hover:text-background"
-              onClick={() =>
-                modal.show(
-                  <div className="bg-white p-6">mai hu ghatotkach</div>
-                )
-              }
+              onClick={() => modal.show(<StakingModal />)}
             >
               <span className="material-icons text-3xl">&#xe147;</span> Stake
             </button>
-          </div>
-        </div>
-        <div className="m-20 w-[35vw] p-10 flex flex-col rounded-xl gap-y-6">
-          <h1 className="self-center text-2xl font-bold text-primary">
-            Overview
-          </h1>
-          <div>
-            <h4 className="text-md font-medium">Stakes</h4>
-            <div className="flex flex-row items-center border-front border border-opacity-50 rounded-xl">
-              <span className="text-4xl py-2 px-2 border border-r-front">
-                <img src="/logo.png" alt="logo" className="w-[1.5ch]" />
-              </span>
-              <input
-                type="number"
-                placeholder="Enter the number of stakes"
-                className="text-md px-2 w-full"
-              />
-            </div>
-          </div>
-          <h6>You will recieve:</h6>
-          <div className="flex flex-row gap-x-8 justify-center">
-            <div className="border-4 border-primary text-front px-5 py-1 rounded-full aspect-square flex flex-col justify-center items-center">
-              <span className="font-bold text-3xl">23</span>
-              <span>L-matic</span>
-            </div>
-            <div className="border-4 border-primary text-front py-1 px-2 rounded-full aspect-square flex flex-col justify-center items-center">
-              <span className="font-bold text-3xl">67</span>
-              <span>Agro-coins</span>
-            </div>
           </div>
         </div>
       </section>
