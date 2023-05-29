@@ -1,4 +1,4 @@
-import {
+import React, {
   ReactNode,
   createContext,
   useContext,
@@ -11,12 +11,18 @@ type CacheType = { key: string; value: any; updated: number }[];
 interface GlobalContextType {
   cache: CacheType;
   putCache: (key: string, value: any) => void;
+  modalState: {
+    modal: ReactNode;
+    setModal: React.Dispatch<React.SetStateAction<React.ReactNode>>;
+  };
 }
 
 const GlobalContext = createContext<GlobalContextType>({} as GlobalContextType);
 
 export function GlobalContextProvider({ children }: { children: ReactNode }) {
   const [cache, setCache] = useState<CacheType>([]);
+
+  const [modal, setModal] = useState<ReactNode | null>();
 
   function putCache(key: string, value: any) {
     let xCache = cache;
@@ -54,7 +60,7 @@ export function GlobalContextProvider({ children }: { children: ReactNode }) {
     loadLocalCache();
   }, []);
 
-  const value = { cache, putCache };
+  const value = { cache, putCache, modalState: { modal, setModal } };
 
   return (
     <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>
