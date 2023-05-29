@@ -4,12 +4,17 @@ import { defaultCacheTimeout } from "../config";
 
 export default function useFetch<T>(
   url: string,
-  options?: { cacheTimeout?: number; initial?: T; callback?: Function }
+  options?: {
+    cacheTimeout?: number;
+    initial?: T;
+    callback?: Function;
+    debug?: boolean;
+  }
 ) {
   const [data, setData] = useState<T | null>(
     options && options.initial ? options.initial : null
   );
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const global = useGlobalContext();
 
@@ -19,10 +24,12 @@ export default function useFetch<T>(
     const cachedValue = global.cache.filter((e) => e.key === url)[0];
 
     if (
-      Date.now() - cachedValue.updated <
-      (options && options.cacheTimeout
-        ? options.cacheTimeout
-        : defaultCacheTimeout)
+      (cachedValue &&
+        Date.now() - cachedValue.updated <
+          (options && options.cacheTimeout
+            ? options.cacheTimeout
+            : defaultCacheTimeout)) ||
+      (options && options.debug && import.meta.env.MODE === "development")
     ) {
       setData(cachedValue.value);
       setLoading(false);
