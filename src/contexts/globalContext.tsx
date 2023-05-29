@@ -1,4 +1,10 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 type CacheType = { key: string; value: any; updated: number }[];
 
@@ -26,7 +32,27 @@ export function GlobalContextProvider({ children }: { children: ReactNode }) {
       xCache.push({ key: key, value: value, updated: Date.now() });
     }
     setCache(xCache);
+    saveLocalCache();
   }
+
+  async function loadLocalCache() {
+    const loadedCache = localStorage.getItem("cache");
+
+    if (loadedCache) {
+      const savedCache = await JSON.parse(loadedCache as string);
+      setCache(savedCache);
+    } else {
+      localStorage.setItem("cache", JSON.stringify(cache));
+    }
+  }
+
+  async function saveLocalCache() {
+    localStorage.setItem("cache", JSON.stringify(cache));
+  }
+
+  useEffect(() => {
+    loadLocalCache();
+  }, []);
 
   const value = { cache, putCache };
 
