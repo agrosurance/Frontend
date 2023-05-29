@@ -23,7 +23,7 @@ export default function App() {
 
   return (
     <GlobalContextProvider>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </GlobalContextProvider>
   );
 }
