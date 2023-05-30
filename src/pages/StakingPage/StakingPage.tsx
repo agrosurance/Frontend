@@ -3,6 +3,7 @@ import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 import useModal from "../../hooks/useModal";
 import StakingModal from "./components/StakingModal";
+import WithdrawModal from "./components/WithdrawModal";
 
 interface Product {
   id: number;
@@ -44,7 +45,10 @@ export default function StakingPage() {
             {"0xcE7ceFc488dC178680af0D0f484356d27CB89725"}
           </p>
           <div className="flex gap-x-6 items-center">
-            <button className="flex gap-x-1 items-center border border-secondary px-5 py-1 bg-secondary bg-opacity-10 text-secondary rounded-lg tracking-tight font-medium duration-500 hover:bg-opacity-100 hover:text-background">
+            <button
+              onClick={() => modal.show(<WithdrawModal />)}
+              className="flex gap-x-1 items-center border border-secondary px-5 py-1 bg-secondary bg-opacity-10 text-secondary rounded-lg tracking-tight font-medium duration-500 hover:bg-opacity-100 hover:text-background"
+            >
               <span className="material-icons text-3xl">&#xe8fb;</span> Withdraw
             </button>
             <button
