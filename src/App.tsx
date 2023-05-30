@@ -13,6 +13,7 @@ import { GlobalContextProvider } from "./contexts/globalContext";
 import StakingPage from "./pages/StakingPage/StakingPage";
 import useModal from "./hooks/useModal";
 import { twMerge } from "tailwind-merge";
+import FarmerPage from "./pages/FarmerPage/FarmerPage";
 
 export default function App() {
   const router = createBrowserRouter(
@@ -21,6 +22,7 @@ export default function App() {
         <Route index element={<HomePage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/stake" element={<StakingPage />} />
+        <Route path="/dashboard" element={<FarmerPage />} />
       </Route>
     )
   );
@@ -39,7 +41,7 @@ function Root() {
   const modal = useModal();
 
   return (
-    <main className="relative">
+    <main className="relative overflow-x-hidden">
       <div
         className={twMerge(
           "absolute top-0 left-0 w-screen h-screen flex justify-center items-center z-[100] bg-[#00000045] duration-500",
