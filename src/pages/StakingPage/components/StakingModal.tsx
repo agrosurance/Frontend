@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import useModal from "../../../hooks/useModal";
 
 export default function StakingModal() {
-  const stakeRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const modal = useModal();
 
+  const [amount, setAmount] = useState<number>(0);
+
   return (
-    <div className="w-[33%] px-10 py-10 flex flex-col rounded-2xl gap-y-8 bg-back relative">
+    <div className="px-20 min-w-[40%] py-10 flex flex-col rounded-2xl gap-y-8 bg-back relative">
       <button
         className="absolute right-10"
         onClick={() => {
@@ -26,21 +27,26 @@ export default function StakingModal() {
             type="number"
             placeholder="Enter the number of stakes"
             className="text-md px-2 w-full"
-            step={0.0001}
-            ref={stakeRef}
+            step={0.00001}
+            value={0}
+            onChange={(e) => setAmount(Number(e.target.value))}
           />
         </div>
       </div>
       <div className="flex flex-col gap-y-2">
         <h6>You will recieve:</h6>
         <div className="flex flex-row gap-x-8 justify-center">
-          <div className="border-4 border-primary text-front px-5 py-1 rounded-full aspect-square flex flex-col justify-center items-center">
-            <span className="font-bold text-3xl">1</span>
-            <span>L-matic</span>
+          <div className="border-4 border-primary text-front px-2 py-1  w-[48%] rounded-full aspect-square flex flex-col justify-center items-center">
+            <span className="font-bold text-3xl">{amount.toFixed(5)}</span>
+            <span>L-MATIC</span>
+            <span className="text-front text-opacity-60 text-xs">now</span>
           </div>
-          <div className="border-4 border-primary text-front py-1 px-2 rounded-full aspect-square flex flex-col justify-center items-center">
-            <span className="font-bold text-3xl">12</span>
+          <div className="border-4 border-primary text-front py-1 px-2 w-[48%]  rounded-full aspect-square flex flex-col justify-center items-center">
+            <span className="font-bold text-3xl">
+              {(amount * 0.2).toFixed(5)}
+            </span>
             <span>Agro-coins</span>
+            <span className="text-front text-opacity-60 text-xs">/month</span>
           </div>
         </div>
       </div>
