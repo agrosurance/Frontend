@@ -50,7 +50,7 @@ export default function StakingModal() {
           </div>
         </div>
       </div>
-      <button className="border border-primary px-5 py-1 bg-primary bg-opacity-10 text-primary rounded-lg font-medium duration-500 hover:bg-opacity-100 hover:text-background">
+      <button className="w-max self-center border border-primary px-6 py-2 bg-primary bg-opacity-10 text-primary rounded-lg font-medium duration-500 hover:bg-opacity-100 hover:text-background">
         Grant
       </button>
     </div>
