@@ -21,7 +21,7 @@ const chartData = {
   // datasets is an array of objects where each object represents a set of data to display corresponding to the labels above. for brevity, we'll keep it at one object
   datasets: [
     {
-      data: [55, 43, 56, 45, 38, 48],
+      data: [55, 43, 56, 52, 38, 48],
     },
   ],
 };
