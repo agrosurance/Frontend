@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { useForceUpdate } from "../hooks/useForceUpdate";
 
 const navItems = [
-  { title: "About Us", to: "/abo  ut" },
+  { title: "About Us", to: "/about" },
   { title: "How it works", to: "/methodology" },
   { title: "Contact", to: "/contact" },
 ];
@@ -50,7 +50,7 @@ export default function Navbar() {
       </div>
       <div className="flex-1 flex items-center justify-end gap-x-14">
         <Link
-          to="/lands"
+          to="/stake"
           className="duration-300 hover:text-primary hover:brightness-75"
         >
           Become a Staker

@@ -18,7 +18,7 @@ export default function StakingModal() {
       </button>
       <h1 className="self-center text-2xl font-bold text-primary">Overview</h1>
       <div>
-        <h4 className="text-md font-medium">Stakes</h4>
+        <h4 className="text-md font-medium">Stake</h4>
         <div className="flex flex-row items-center border-front border border-opacity-50 rounded-xl">
           <span className="text-4xl py-2 px-2 border border-r-front">
             <img src="/logo.png" alt="logo" className="w-[1.5ch]" />
