@@ -65,7 +65,7 @@ export default function StakingPage() {
           <div
             className="bg-foreground relative bg-opacity-70 aspect-square rounded-full min-w-[60%] flex flex-col items-center gap-y-3 justify-center text-back tracking-tight 
           font-medium font-raleway text-xl text-opacity-80 before:content-visible before:absolute-center before:w-full before:h-full before:rounded-full before:border-primary
-          before:scale-110 before:border-[8px]"
+          before:scale-110 before:border-[8px] pointer-events-none selection:hidden"
           >
             <p>Staked Value</p>
             <h5 className="text-7xl font-poppins bg-clip-text bg-gradient-to-br text-back text-opacity-100">
@@ -77,6 +77,16 @@ export default function StakingPage() {
         <div className="flex flex-col items-center justify-center w-[49%] bg-foreground bg-opacity-10 rounded-[3rem] p-8">
           {<Graph chartData={chartData} />}
         </div>
+      </section>
+      <section className="p-page text-center text-primary tracking-tight font-semibold font-raleway">
+        <p>
+          You're raking in about
+          <span className="text-primary font-poppins text-lg">
+            {" "}
+            {20} AGRO-COINs{" "}
+          </span>
+          every months
+        </p>
       </section>
     </>
   );
