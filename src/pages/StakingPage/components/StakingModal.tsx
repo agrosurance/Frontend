@@ -35,16 +35,16 @@ export default function StakingModal() {
         <h6>You will recieve:</h6>
         <div className="flex flex-row gap-x-8 justify-center">
           <div className="border-4 border-primary text-front px-5 py-1 rounded-full aspect-square flex flex-col justify-center items-center">
-            <span className="font-bold text-3xl">{stakeRef.current.value}</span>
+            <span className="font-bold text-3xl">1</span>
             <span>L-matic</span>
           </div>
           <div className="border-4 border-primary text-front py-1 px-2 rounded-full aspect-square flex flex-col justify-center items-center">
-            <span className="font-bold text-3xl">{stakeRef.current.value}</span>
+            <span className="font-bold text-3xl">12</span>
             <span>Agro-coins</span>
           </div>
         </div>
       </div>
-      <button className="border border-primary px-5 py-1 bg-primary bg-opacity-10 text-primary rounded-lg font-medium duration-500 hover:bg-opacity-100 hover:text-background">
+      <button className="w-max self-center border border-primary px-6 py-2 bg-primary bg-opacity-10 text-primary rounded-lg font-medium duration-500 hover:bg-opacity-100 hover:text-background">
         Grant
       </button>
     </div>
