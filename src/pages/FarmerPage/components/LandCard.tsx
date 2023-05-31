@@ -67,10 +67,13 @@ export default function LandCard(props: LandCardProps) {
           >
             {" "}
             {`${
-              loadingDecodedLocation
-                ? "loading"
-                : decodedLocation.data[0].locality ||
+              !loadingDecodedLocation &&
+              decodedLocation &&
+              decodedLocation.data &&
+              decodedLocation.data[0]
+                ? decodedLocation.data[0].locality ||
                   decodedLocation.data[0].region
+                : "loading"
             }`}
           </span>{" "}
           <span className="text-sm">
