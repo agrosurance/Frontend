@@ -1,24 +1,67 @@
-interface Land {
-  name: string;
-  crop?: {
-    name: string;
-    imageUrl: string;
-  };
-  isInsured: boolean;
-  insuredTill: number;
-}
+import { twMerge } from "tailwind-merge";
+import { Land } from "../../../interfaces/Data";
+import LandCard from "./LandCard";
 
 const lands: Land[] = [
   {
     name: "bekaar zameen",
-    isInsured: true,
-    insuredTill: Date.now() + 360000,
+    insurance: {
+      isInsured: false,
+    },
+    location: {
+      latitude: 19.0601,
+      longitude: 73.014,
+    },
+    area: 90,
   },
   {
-    name: "bekaar zameen",
-    crop: { name: "", imageUrl: "/images/lands/untilled.png" },
-    isInsured: true,
-    insuredTill: Date.now() + 360000,
+    name: "Zameen e Virasat",
+    crop: { name: "Carrot", imageUrl: "/images/lands/carrot.png" },
+    insurance: {
+      isInsured: true,
+      insuredTill: Date.now() + 360000,
+    },
+    location: {
+      latitude: 21.0601,
+      longitude: 74.564,
+    },
+    area: 120,
+  },
+  {
+    name: "Looti hui",
+    crop: { name: "Corn", imageUrl: "/images/lands/corn.png" },
+    insurance: {
+      isInsured: true,
+      insuredTill: Date.now() + 450000,
+    },
+    location: {
+      latitude: 19.5601,
+      longitude: 83.6147,
+    },
+    area: 20,
+  },
+  {
+    name: "Idhar Farmhouse Banaundga",
+    crop: { name: "Maize", imageUrl: "/images/lands/maize.png" },
+    insurance: {
+      isInsured: false,
+    },
+    location: {
+      latitude: 53.0601,
+      longitude: 13.014,
+    },
+    area: 5,
+  },
+  {
+    name: "as dry as your girl",
+    insurance: {
+      isInsured: false,
+    },
+    location: {
+      latitude: 49.0601,
+      longitude: 23.014,
+    },
+    area: 100,
   },
 ];
 
@@ -28,37 +71,8 @@ export default function Lands() {
       <h1 className="-mb-3 font-bold font-raleway tracking-tight text-3xl text-center">
         My Lands{" "}
       </h1>
-      {lands.map((item, i) => (
-        <div
-          key={i}
-          className="border border-front border-opacity-30 shadow-md rounded-2xl flex"
-        >
-          <div className="basis-1/4 flex flex-col items-center gap-y-5 p-5 border-r border-front">
-            <img
-              src={
-                item.crop ? item.crop.imageUrl : "/images/lands/untilled.png"
-              }
-              alt={item.crop ? item.crop.name : "empty farmland"}
-              className="object-contain"
-            />
-            <h2 className="text-xl font-semibold font-raleway tracking-tight capitalize bg-front text-front bg-opacity-10 px-4 py-1 rounded-md">
-              {item.name}
-            </h2>
-          </div>
-          <div className="flex-1 flex flex-col p-6 text-lg">
-            {[
-              {
-                title: "Crop",
-                content: item.crop ? item.crop.name : "None",
-              },
-            ].map((info, index) => (
-              <p key={index} className="text-xl">
-                {info.title} : <span>{info.content}</span>
-              </p>
-            ))}
-          </div>
-          <div className="flex flex-col"></div>
-        </div>
+      {lands.map((land, i) => (
+        <LandCard land={land} key={i} />
       ))}
     </section>
   );

@@ -21,6 +21,7 @@ const GlobalContext = createContext<GlobalContextType>({} as GlobalContextType);
 
 export function GlobalContextProvider({ children }: { children: ReactNode }) {
   const [cache, setCache] = useState<CacheType>([]);
+  const [loading, setLoading] = useState(true);
 
   const [modal, setModal] = useState<ReactNode | null>();
 
@@ -50,6 +51,8 @@ export function GlobalContextProvider({ children }: { children: ReactNode }) {
     } else {
       localStorage.setItem("cache", JSON.stringify(cache));
     }
+
+    setLoading(false);
   }
 
   async function saveLocalCache() {
@@ -63,7 +66,9 @@ export function GlobalContextProvider({ children }: { children: ReactNode }) {
   const value = { cache, putCache, modalState: { modal, setModal } };
 
   return (
-    <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>
+    <GlobalContext.Provider value={value}>
+      {!loading && children}
+    </GlobalContext.Provider>
   );
 }
 

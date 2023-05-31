@@ -6,7 +6,7 @@ import { useForceUpdate } from "../hooks/useForceUpdate";
 const navItems = [
   { title: "About Us", to: "/about" },
   { title: "How it works", to: "/methodology" },
-  { title: "Contact", to: "/contact" },
+  { title: "Contact", to: "/dashboard" },
 ];
 
 const hiddenAt = ["/auth"];
