@@ -19,7 +19,7 @@ const lands: Land[] = [
     crop: { name: "Carrot", imageUrl: "/images/lands/carrot.png" },
     insurance: {
       isInsured: true,
-      insuredTill: Date.now() + 360000,
+      insuredTill: Date.now() + 31234560000,
     },
     location: {
       latitude: 21.0601,
@@ -32,7 +32,7 @@ const lands: Land[] = [
     crop: { name: "Corn", imageUrl: "/images/lands/corn.png" },
     insurance: {
       isInsured: true,
-      insuredTill: Date.now() + 450000,
+      insuredTill: Date.now() + 8122450000,
     },
     location: {
       latitude: 19.5601,
