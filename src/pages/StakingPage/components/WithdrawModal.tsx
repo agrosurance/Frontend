@@ -64,7 +64,7 @@ function WithdrawState() {
   const [amount, setAmount] = useState<number>(0);
 
   return (
-    <div className="">
+    <div>
       <button
         className="absolute right-6 top-6 text-white duration-300 scale-110 hover:scale-125"
         onClick={modal.hide}
@@ -93,11 +93,11 @@ function WithdrawState() {
               }}
             />
             <span className="border border-l-front px-3 border-transparent whitespace-nowrap py-3">
-              L-Matic
+              LMATIC
             </span>
           </div>
           <button className="bg-secondary px-2 py-3 rounded-xl text-md text-back font-semibold duration-300 hover:brightness-110 hover:-translate-y-1">
-            Claim
+            Exchange
           </button>
         </div>
         <div className="flex flex-row justify-around py-6">
@@ -105,7 +105,7 @@ function WithdrawState() {
             <div className="text-xl font-semibold">You will get</div>
             <div className="border-4 border-secondary text-front py-1 px-2 rounded-full aspect-square flex flex-col justify-center items-center">
               <span className="font-bold text-3xl">{amount.toFixed(4)}</span>
-              <span>Matic</span>
+              <span>MATIC</span>
             </div>
           </div>
         </div>

@@ -72,7 +72,7 @@ export default function Lands() {
         My Lands{" "}
       </h1>
       {lands.map((land, i) => (
-        <LandCard land={land} key={i} />
+        <LandCard land={land} key={i} landId={i} />
       ))}
     </section>
   );

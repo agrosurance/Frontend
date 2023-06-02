@@ -2,13 +2,19 @@ import { twMerge } from "tailwind-merge";
 import { Land } from "../../../interfaces/Data";
 import { useEffect, useState } from "react";
 import useFetch from "../../../hooks/useFetch";
+import useModal from "../../../hooks/useModal";
+import AddCropModal from "./modals/AddCropModal";
+import MakeClaimModal from "./modals/MakeClaimModal";
+import GetInsuranceModal from "./modals/GetInsuranceModal";
 
 interface LandCardProps {
   land: Land;
+  landId: number;
 }
 
 export default function LandCard(props: LandCardProps) {
   const land = props.land;
+  const modal = useModal();
 
   const [decodedLocation, loadingDecodedLocation] = useFetch<{
     data: { locality?: string; region: string }[];
@@ -86,6 +92,13 @@ export default function LandCard(props: LandCardProps) {
       </div>
       <div className="w-[18%] h-full self-center m-5">
         <button
+          onClick={() => {
+            !land.crop
+              ? modal.show(<AddCropModal landId={props.landId} />)
+              : land.insurance.isInsured
+              ? modal.show(<MakeClaimModal landId={props.landId} />)
+              : modal.show(<GetInsuranceModal landId={props.landId} />);
+          }}
           className={`aspect-square w-full flex flex-col items-center justify-center gap-y-5 text-2xl rounded-xl bg-opacity-10 duration-300 hover:bg-opacity-100 group hover:text-background ${
             !land.crop
               ? "bg-primary text-primary"

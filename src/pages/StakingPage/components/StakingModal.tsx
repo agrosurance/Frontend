@@ -41,7 +41,7 @@ export default function StakingModal() {
         <div className="flex flex-row gap-x-8 justify-center">
           <div className="border-4 border-primary text-front px-2 py-1  w-[48%] rounded-full aspect-square flex flex-col justify-center items-center">
             <span className="font-bold text-3xl">{amount.toFixed(5)}</span>
-            <span>L-MATIC</span>
+            <span>LMATIC</span>
             <span className="text-front text-opacity-60 text-xs">now</span>
           </div>
           <div className="border-4 border-primary text-front py-1 px-2 w-[48%]  rounded-full aspect-square flex flex-col justify-center items-center">
