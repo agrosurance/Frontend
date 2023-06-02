@@ -86,6 +86,7 @@ function WithdrawState() {
               placeholder="Enter the number of stakes"
               className="text-md px-4 w-[90%]"
               step={0.00001}
+              min={0}
               value={amount}
               onChange={(e) => {
                 setAmount(clamp(Number(e.target.value), { min: 0, max: 9999 }));
