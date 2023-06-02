@@ -26,6 +26,7 @@ export default function LandCard(props: LandCardProps) {
           src={land.crop ? land.crop.imageUrl : "/images/lands/untilled.png"}
           alt={land.crop ? land.crop.name : "empty farmland"}
           className="object-contain"
+          draggable={false}
         />
         <h2 className="text-xl text-center font-semibold font-raleway tracking-tight capitalize bg-front text-front bg-opacity-10 px-4 py-1 rounded-md">
           {land.name}
@@ -35,11 +36,12 @@ export default function LandCard(props: LandCardProps) {
         {
           <div
             className={twMerge(
-              "w-max py-2 px-3 rounded-md bg-opacity-10",
+              "w-max py-2 px-3 rounded-md bg-opacity-10 pointer-events-none selection:hidden",
               land.insurance.isInsured
                 ? "bg-primary text-primary"
                 : "bg-red-500 text-red-500"
             )}
+            draggable={false}
           >
             {land.insurance.isInsured ? (
               <p className="flex items-center gap-x-1">
