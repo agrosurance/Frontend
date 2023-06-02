@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useModal from "../../../hooks/useModal";
+import { clamp } from "../../../utils";
 
 export default function StakingModal() {
   const modal = useModal();
@@ -28,8 +29,10 @@ export default function StakingModal() {
             placeholder="Enter the number of stakes"
             className="text-md px-2 w-full"
             step={0.00001}
-            value={0}
-            onChange={(e) => setAmount(Number(e.target.value))}
+            value={amount}
+            onChange={(e) => {
+              setAmount(clamp(Number(e.target.value), { min: 0, max: 9999 }));
+            }}
           />
         </div>
       </div>
