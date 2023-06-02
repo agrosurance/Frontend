@@ -8,19 +8,21 @@ export default function StakingModal() {
   const [amount, setAmount] = useState<number>(0);
 
   return (
-    <div className="px-20 min-w-[40%] py-10 flex flex-col rounded-2xl gap-y-8 bg-back relative">
+    <div className="flex flex-col pb-8 min-w-[30%] rounded-xl bg-back relative overflow-hidden">
       <button
-        className="absolute right-10"
+        className="absolute right-4 top-4 scale-110 hover:scale-125 duration-300 text-back"
         onClick={() => {
           modal.hide();
         }}
       >
         <span className="material-icons">&#xe5cd;</span>
       </button>
-      <h1 className="self-center text-2xl font-bold text-primary">Overview</h1>
-      <div>
+      <h2 className="text-4xl bg-primary py-10 text-white font-bold font-raleway tracking-tighter text-center mb-10">
+        Overview
+      </h2>
+      <div className=" min-w-[40%] flex flex-col rounded-2xl gap-y-2  px-10">
         <h4 className="text-md font-medium">Stake</h4>
-        <div className="flex flex-row items-center border-front border border-opacity-50 rounded-xl">
+        <div className="flex flex-row items-center border-front border order-opacity-50 rounded-xl">
           <span className="text-4xl py-2 px-2 border border-r-front">
             <img src="/logo.png" alt="logo" className="w-[1.5ch]" />
           </span>
@@ -36,7 +38,7 @@ export default function StakingModal() {
           />
         </div>
       </div>
-      <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-2 px-10 py-8">
         <h6>You will recieve:</h6>
         <div className="flex flex-row gap-x-8 justify-center">
           <div className="border-4 border-primary text-front px-2 py-1  w-[48%] rounded-full aspect-square flex flex-col justify-center items-center">
