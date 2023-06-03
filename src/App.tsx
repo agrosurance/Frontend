@@ -46,8 +46,8 @@ function Root() {
     <main className="relative">
       <div
         className={twMerge(
-          "fixed top-0 left-0 w-full h-screen flex justify-center items-center z-[100] bg-[#00000045] duration-500",
-          modal.element ? "opacity-100" : "opacity-0 pointer-events-none"
+          "fixed left-0 top-0 z-[100] flex h-screen w-full items-center justify-center bg-[#00000045] duration-500",
+          modal.element ? "opacity-100" : "pointer-events-none opacity-0"
         )}
       >
         {modal.element}

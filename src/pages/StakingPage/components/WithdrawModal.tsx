@@ -11,7 +11,7 @@ export default function WithdrawModal() {
   });
 
   return (
-    <div className="bg-back min-w-[30%] rounded-2xl relative overflow-hidden">
+    <div className="relative min-w-[30%] overflow-hidden rounded-2xl bg-back">
       {loading ? (
         <LoadingState />
       ) : !enable.enabled ? (
@@ -27,7 +27,7 @@ function LoadingState() {
   return (
     <div className="flex flex-col items-center p-20">
       <img src="/loading.gif" alt="loading" className="h-48" />
-      <p className="text-5xl font-bold text-front animate-pulse">Loading...</p>
+      <p className="animate-pulse text-5xl font-bold text-front">Loading...</p>
     </div>
   );
 }
@@ -38,17 +38,17 @@ function DisabledState() {
   return (
     <div className="text-red-500">
       <button
-        className="absolute right-6 top-6 text-white duration-300 scale-110 hover:scale-125"
+        className="absolute right-6 top-6 scale-110 text-white duration-300 hover:scale-125"
         onClick={modal.hide}
       >
         <MaterialIcon codepoint="e5cd" />
       </button>
-      <h2 className="text-4xl bg-red-500 py-10 text-white font-bold font-raleway tracking-tighter text-center mb-10">
+      <h2 className="mb-10 bg-red-500 py-10 text-center font-raleway text-4xl font-bold tracking-tighter text-white">
         Oh No!
       </h2>
       <div className="flex items-center px-20 pb-10">
         <MaterialIcon codepoint="e811" className="text-8xl" />
-        <div className="flex flex-1 flex-col items-center gap-y-1 ml-4 text-front">
+        <div className="ml-4 flex flex-1 flex-col items-center gap-y-1 text-front">
           <p>Unfortunately, you can't withdraw right now</p>
           <p>Don't worry, your MATIC is safe with us</p>
           <p>meanwhite you can use your LMATIC</p>
@@ -66,25 +66,25 @@ function WithdrawState() {
   return (
     <div>
       <button
-        className="absolute right-6 top-6 text-white duration-300 scale-110 hover:scale-125"
+        className="absolute right-6 top-6 scale-110 text-white duration-300 hover:scale-125"
         onClick={modal.hide}
       >
         <MaterialIcon codepoint="e5cd" />
       </button>
-      <h2 className="text-4xl bg-secondary py-10 text-white font-bold font-raleway tracking-tighter text-center mb-10">
+      <h2 className="mb-10 bg-secondary py-10 text-center font-raleway text-4xl font-bold tracking-tighter text-white">
         Withdraw?
       </h2>
-      <div className="px-6 flex flex-col justify-center">
-        <div className="flex flex-row gap-x-4 items-center">
-          <div className="flex flex-row items-center border-front border rounded-xl">
+      <div className="flex flex-col justify-center px-6">
+        <div className="flex flex-row items-center gap-x-4">
+          <div className="flex flex-row items-center rounded-xl border border-front">
             <MaterialIcon
               codepoint="e8fb"
-              className="scale-125 text-4xl self-center text-secondary w-max border border-r-front px-1  border-transparent"
+              className="w-max scale-125 self-center border border-transparent border-r-front px-1 text-4xl  text-secondary"
             />
             <input
               type="number"
               placeholder="Enter the number of stakes"
-              className="text-md px-4 w-[90%]"
+              className="text-md w-[90%] px-4"
               step={0.00001}
               min={0}
               value={amount}
@@ -92,19 +92,19 @@ function WithdrawState() {
                 setAmount(clamp(Number(e.target.value), { min: 0, max: 9999 }));
               }}
             />
-            <span className="border border-l-front px-3 border-transparent whitespace-nowrap py-3">
+            <span className="whitespace-nowrap border border-transparent border-l-front px-3 py-3">
               LMATIC
             </span>
           </div>
-          <button className="bg-secondary px-2 py-3 rounded-xl text-md text-back font-semibold duration-300 hover:brightness-110 hover:-translate-y-1">
+          <button className="text-md rounded-xl bg-secondary px-2 py-3 font-semibold text-back duration-300 hover:-translate-y-1 hover:brightness-110">
             Exchange
           </button>
         </div>
         <div className="flex flex-row justify-around py-6">
           <div className="flex flex-col items-center gap-y-2">
             <div className="text-xl font-semibold">You will get</div>
-            <div className="border-4 border-secondary text-front py-1 px-2 rounded-full aspect-square flex flex-col justify-center items-center">
-              <span className="font-bold text-3xl">{amount.toFixed(4)}</span>
+            <div className="flex aspect-square flex-col items-center justify-center rounded-full border-4 border-secondary px-2 py-1 text-front">
+              <span className="text-3xl font-bold">{amount.toFixed(4)}</span>
               <span>MATIC</span>
             </div>
           </div>

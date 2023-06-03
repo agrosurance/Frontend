@@ -1,15 +1,15 @@
 export default function Form(props: { className?: string }) {
   return (
     <div
-      className={`flex flex-col justify-center basis-3/5 px-32 gap-y-8 duration-1000 bg-background ${props.className}`}
+      className={`flex basis-3/5 flex-col justify-center gap-y-8 bg-background px-32 duration-1000 ${props.className}`}
     >
-      <h1 className="text-4xl font-bold self-center">Register</h1>
+      <h1 className="self-center text-4xl font-bold">Register</h1>
       <div className="flex flex-col gap-y-8">
         <div className="flex flex-col gap-y-1">
           <h4 className="text-md font-medium">Email</h4>
 
-          <div className="flex flex-row items-center border-front border border-opacity-50 rounded-xl">
-            <span className="material-icons text-4xl py-2 px-2 border border-r-front">
+          <div className="flex flex-row items-center rounded-xl border border-front border-opacity-50">
+            <span className="material-icons border border-r-front px-2 py-2 text-4xl">
               &#xe158;
             </span>
             <input
@@ -22,8 +22,8 @@ export default function Form(props: { className?: string }) {
         <div className="flex flex-col gap-y-1">
           <h4 className="text-md font-medium">Password</h4>
 
-          <div className="flex flex-row items-center border-front border border-opacity-50 rounded-lg">
-            <span className="material-icons text-4xl py-2 px-2 border border-r-front">
+          <div className="flex flex-row items-center rounded-lg border border-front border-opacity-50">
+            <span className="material-icons border border-r-front px-2 py-2 text-4xl">
               &#xe897;
             </span>
             <input
@@ -33,7 +33,7 @@ export default function Form(props: { className?: string }) {
             />
           </div>
         </div>
-        <button className="btn-2 w-max px-6 py-2 self-center">Connect</button>
+        <button className="btn-2 w-max self-center px-6 py-2">Connect</button>
       </div>
     </div>
   );

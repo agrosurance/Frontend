@@ -26,23 +26,23 @@ export default function LandCard(props: LandCardProps) {
   );
 
   return (
-    <div className="border border-front border-opacity-30 shadow-md rounded-2xl flex">
-      <div className="basis-1/4 flex flex-col h-full self-center lands-center gap-y-5 p-5 border-r border-front border-opacity-30">
+    <div className="flex rounded-2xl border border-front border-opacity-30 shadow-md">
+      <div className="lands-center flex h-full basis-1/4 flex-col gap-y-5 self-center border-r border-front border-opacity-30 p-5">
         <img
           src={land.crop ? land.crop.imageUrl : "/images/lands/untilled.png"}
           alt={land.crop ? land.crop.name : "empty farmland"}
           className="object-contain"
           draggable={false}
         />
-        <h2 className="text-xl text-center font-semibold font-raleway tracking-tight capitalize bg-front text-front bg-opacity-10 px-4 py-1 rounded-md">
+        <h2 className="rounded-md bg-front bg-opacity-10 px-4 py-1 text-center font-raleway text-xl font-semibold capitalize tracking-tight text-front">
           {land.name}
         </h2>
       </div>
-      <div className="flex-1 flex flex-col p-6 gap-y-5 text-lg">
+      <div className="flex flex-1 flex-col gap-y-5 p-6 text-lg">
         {
           <div
             className={twMerge(
-              "w-max py-2 px-3 rounded-md bg-opacity-10 pointer-events-none selection:hidden",
+              "pointer-events-none w-max rounded-md bg-opacity-10 px-3 py-2 selection:hidden",
               land.insurance.isInsured
                 ? "bg-primary text-primary"
                 : "bg-red-500 text-red-500"
@@ -69,7 +69,7 @@ export default function LandCard(props: LandCardProps) {
           <span
             className={`${
               loadingDecodedLocation
-                ? "px-2 bg-front bg-opacity-20 animate-pulse"
+                ? "animate-pulse bg-front bg-opacity-20 px-2"
                 : ""
             }`}
           >
@@ -90,7 +90,7 @@ export default function LandCard(props: LandCardProps) {
         </p>
         <p className="text-xl">Area : {land.area} Acres</p>
       </div>
-      <div className="w-[18%] h-full self-center m-5">
+      <div className="m-5 h-full w-[18%] self-center">
         <button
           onClick={() => {
             !land.crop
@@ -99,7 +99,7 @@ export default function LandCard(props: LandCardProps) {
               ? modal.show(<MakeClaimModal landId={props.landId} />)
               : modal.show(<GetInsuranceModal landId={props.landId} />);
           }}
-          className={`aspect-square w-full flex flex-col items-center justify-center gap-y-5 text-2xl rounded-xl bg-opacity-10 duration-300 hover:bg-opacity-100 group hover:text-background ${
+          className={`group flex aspect-square w-full flex-col items-center justify-center gap-y-5 rounded-xl bg-opacity-10 text-2xl duration-300 hover:bg-opacity-100 hover:text-background ${
             !land.crop
               ? "bg-primary text-primary"
               : land.insurance.isInsured

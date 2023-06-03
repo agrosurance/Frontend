@@ -16,16 +16,16 @@ export default function AuthPage() {
 
   return (
     <>
-      <div className="absolute top-0 left-0 w-full h-full -z-1 bg-primary brightness-[83%]"></div>
+      <div className="absolute left-0 top-0 -z-1 h-full w-full bg-primary brightness-[83%]"></div>
       <button
         onClick={() => {
           navigate(-1);
         }}
-        className="material-icons absolute left-5 top-5 z-20 border-2 border-back rounded-full px-2 flex items-center brightness-0 invert text-2xl aspect-square hover:scale-125 hover:cursor-pointer transition-all duration-300"
+        className="material-icons absolute left-5 top-5 z-20 flex aspect-square items-center rounded-full border-2 border-back px-2 text-2xl brightness-0 invert transition-all duration-300 hover:scale-125 hover:cursor-pointer"
       >
         &#xe5c4;
       </button>
-      <div className="flex flex-row h-screen overflow-hidden">
+      <div className="flex h-screen flex-row overflow-hidden">
         <Banner className={animFlag ? "translate-x-0" : "-translate-x-full"} />
         <Form className={animFlag ? "translate-x-0" : "translate-x-full"} />
       </div>

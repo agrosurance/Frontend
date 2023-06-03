@@ -68,7 +68,7 @@ const lands: Land[] = [
 export default function Lands() {
   return (
     <section className="p-page flex flex-col gap-y-10">
-      <h1 className="-mb-3 font-bold font-raleway tracking-tight text-3xl text-center">
+      <h1 className="-mb-3 text-center font-raleway text-3xl font-bold tracking-tight">
         My Lands{" "}
       </h1>
       {lands.map((land, i) => (

@@ -23,11 +23,11 @@ export default function Navbar() {
   return (
     <nav
       className={twMerge(
-        "p-page py-12 flex justify-center text-front text-opacity-70 font-medium tracking-tight text-[15px]",
+        "p-page flex justify-center py-12 text-[15px] font-medium tracking-tight text-front text-opacity-70",
         hideNav ? "hidden" : ""
       )}
     >
-      <div className="flex-1 flex items-center gap-x-14">
+      <div className="flex flex-1 items-center gap-x-14">
         {navItems.map((item, i) => (
           <Link
             key={i}
@@ -48,7 +48,7 @@ export default function Navbar() {
           />
         </Link>
       </div>
-      <div className="flex-1 flex items-center justify-end gap-x-14">
+      <div className="flex flex-1 items-center justify-end gap-x-14">
         <Link
           to="/stake"
           className="duration-300 hover:text-primary hover:brightness-75"
