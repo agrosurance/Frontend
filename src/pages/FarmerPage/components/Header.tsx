@@ -1,4 +1,8 @@
+import useModal from "../../../hooks/useModal";
+import AddLand from "./modals/AddLand";
+
 export default function Header() {
+  const modal = useModal();
   return (
     <header className="p-page my-3 flex items-stretch">
       <div
@@ -36,7 +40,12 @@ export default function Header() {
         </div>
       </div>
       <div className="flex-1 min-h-full max-h-full flex flex-col justify-between gap-y-2 items-center py-10 px-14">
-        <button className="bg-primary p-3 bg-opacity-20 rounded-xl flex items-center text-primary px-6 justify-between text-2xl duration-300 hover:bg-opacity-70 hover:text-back">
+        <button
+          onClick={() => {
+            modal.show(<AddLand />);
+          }}
+          className="bg-primary p-3 bg-opacity-20 rounded-xl flex items-center text-primary px-6 justify-between text-2xl duration-300 hover:bg-opacity-70 hover:text-back"
+        >
           <img
             src="/images/placeholder-land.png"
             alt="land"
