@@ -14,6 +14,7 @@ import StakingPage from "./pages/StakingPage/StakingPage";
 import useModal from "./hooks/useModal";
 import { twMerge } from "tailwind-merge";
 import FarmerPage from "./pages/FarmerPage/FarmerPage";
+import AboutPage from "./pages/AboutPage/AboutPage";
 
 export default function App() {
   const router = createBrowserRouter(
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/stake" element={<StakingPage />} />
         <Route path="/dashboard" element={<FarmerPage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Route>
     )
   );
