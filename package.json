@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "deploy": "yarn build && npx thirdweb@latest upload dist"
+    "deploy": "yarn build && npx thirdweb@latest upload dist",
+    "format": "npx prettier --write ."
   },
   "dependencies": {
     "@thirdweb-dev/react": "^3.11.1",
