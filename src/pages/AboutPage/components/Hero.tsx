@@ -1,19 +1,19 @@
 export default function Hero() {
   return (
-    <section className="p-page flex items-center overflow-hidden">
+    <section className="p-page flex h-[calc(100vh_-_8rem)] items-center overflow-hidden">
       <video
-        className="relative -z-1 basis-1/2 scale-125 object-cover"
+        className="relative -z-1 w-1/2 scale-125 object-cover"
         autoPlay
         muted
         loop
       >
-        <source src="/videos/happy-farmer1.mp4" type="video/mp4" />
+        <source src="/videos/happy-farmer2.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       <div className="relative flex basis-1/2 flex-col items-center gap-y-8">
         <div className="flex flex-col items-center gap-y-2 text-center font-raleway text-5xl font-semibold text-primary">
           <h1 className="font-bold brightness-75">
-            First Farmer-First Initiative
+            The Farmer-First Initiative
           </h1>
           <h2 className="saturate-150">for provably fair rates on</h2>
           <h2 className="saturate-150">farmland insurance</h2>
