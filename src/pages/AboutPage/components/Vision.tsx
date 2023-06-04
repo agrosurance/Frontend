@@ -6,7 +6,9 @@ export default function Vision() {
       <div className="absolute left-0 top-0 z-0 flex h-full w-full flex-col items-center bg-gradient-to-b from-transparent via-[#00000099] to-[#00000088] leading-snug tracking-wide" />
 
       <div className="p-page relative z-1 flex flex-col items-center gap-y-3 text-center text-white drop-shadow-lg">
-        <h1 className="my-8 text-7xl font-bold">OUR VISION</h1>
+        <div className="">
+          <h1 className="my-8 text-7xl font-bold">OUR VISION</h1>
+        </div>
         <h4 className="">
           AgroSurance envisions a future where farmers worldwide have seamless
           access to transparent and reliable crop insurance. Through the
