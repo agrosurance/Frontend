@@ -4,6 +4,7 @@ import {
   Outlet,
   Route,
   RouterProvider,
+  useLocation,
 } from "react-router-dom";
 import Footer from "./common/Footer";
 import Navbar from "./common/Navbar";
@@ -15,6 +16,8 @@ import useModal from "./hooks/useModal";
 import { twMerge } from "tailwind-merge";
 import FarmerPage from "./pages/FarmerPage/FarmerPage";
 import AboutPage from "./pages/AboutPage/AboutPage";
+import ContactPage from "./pages/ContactPage/ContactPage";
+import { useEffect } from "react";
 
 export default function App() {
   const router = createBrowserRouter(
@@ -25,6 +28,7 @@ export default function App() {
         <Route path="/stake" element={<StakingPage />} />
         <Route path="/dashboard" element={<FarmerPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Route>
     )
   );
@@ -41,6 +45,12 @@ export default function App() {
 
 function Root() {
   const modal = useModal();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [location]);
 
   return (
     <main className="relative">

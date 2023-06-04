@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function Vision() {
   return (
     <section className="relative flex aspect-video flex-col items-center justify-center bg-[url('/images/illustrations/farmland.png')] bg-cover bg-fixed bg-top">
@@ -5,7 +7,7 @@ export default function Vision() {
 
       <div className="p-page relative z-1 flex flex-col items-center gap-y-3 text-center text-white drop-shadow-lg">
         <h1 className="my-8 text-7xl font-bold">OUR VISION</h1>
-        <p>
+        {/* <p>
           AgroSurance envisions a future where farmers worldwide have seamless
           access to transparent and reliable crop insurance. Through the
           utilization of advanced technologies such as blockchain and Chainlink,
@@ -29,7 +31,7 @@ export default function Vision() {
           shape a future where agriculture flourishes, and farmers are equipped
           with the tools they need to cultivate a sustainable and prosperous
           world.
-        </p>
+        </p> */}
       </div>
     </section>
   );

@@ -28,6 +28,7 @@ export default function Hero() {
         <div className="my-3 flex max-w-[45vw] gap-x-8">
           <div className="flex max-w-[45%] gap-x-5">
             <img
+              draggable={false}
               src="https://cryptologos.cc/logos/chainlink-link-logo.png?v=025"
               alt="chainlink"
               className="aspect-square w-14 opacity-50 brightness-0"
@@ -38,6 +39,7 @@ export default function Hero() {
           </div>
           <div className="flex max-w-[45%] gap-x-5">
             <img
+              draggable={false}
               src="/logo.png"
               alt="chainlink"
               className="aspect-square w-14 opacity-50 brightness-0"

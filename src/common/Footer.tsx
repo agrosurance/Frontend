@@ -59,14 +59,19 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="text-center text-back text-opacity-80">
+        <div className="flex flex-col items-center text-center text-back text-opacity-80">
           <h5 className="my-3 text-4xl font-bold tracking-tighter text-back">
             TRULY GREEN
           </h5>
           <p>We create possibilities</p>
           <p>for a world which has</p>
           <p>forgotten the true</p>
-          <p className="font-semibold text-back">Annapurna</p>
+          {/* <p className="font-semibold text-back">Annapurna</p> */}
+          <img
+            src="/images/illustrations/annapurna-text.png"
+            alt="annapurna"
+            className="my-2 h-4"
+          />
         </div>
       </div>
       <div className="my-2 flex gap-x-4">
