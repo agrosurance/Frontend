@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Easy to use",
+    "content": "Using our intuitive platform, farmers can easily navigate the process of insuring their crops. They can add their land, select the desired crops, and receive accurate insurance quotes in real time. Our proprietary algorithm assesses the suitability of the land for the chosen crops, taking into account factors such as soil conditions, climate patterns, and historical data. This ensures that farmers receive fair and customized insurance premiums based on the unique risks associated with their agricultural operations.",
+    "videoUrl": "/videos/application-ease.mp4"
+  },
+  {
+    "title": "Everything on chain with ChainLink",
+    "content": "At AgroSurance, we leverage Chainlink's secure and decentralized oracle network to gather real-time environmental data. Our algorithm cross-references this data with the coordinates of the insured land to determine whether the reported crop damage aligns with the prevailing conditions. If the conditions indicate that the crop loss was indeed caused by factors beyond the farmer's control, we promptly provide insurance coverage. However, if the algorithm's assessment is disputed, our judge protocol comes into action to resolve any discrepancies and ensure a fair outcome.",
+    "videoUrl": "/videos/chainlink-blur-bg.mp4"
+  },
+  {
+    "title": "Trust, inspired by our past endavours",
+    "content": "Transparency and trust are at the core of our values. By leveraging the power of blockchain technology, we bring transparency to the insurance process. Every step, from the initial insurance request to claim settlement, is recorded on the blockchain, creating an immutable and auditable record of transactions. Our use of Chainlink's reliable and secure oracle network further enhances the transparency and integrity of our platform, ensuring that farmers can have complete confidence in the insurance services we provide.",
+    "videoUrl": "/videos/trust-security.mp4"
+  },
+  {
+    "title": "Empowerment done right, action without words",
+    "content": "At AgroSurance, we are committed to empowering farmers, mitigating risks, and fostering sustainable agriculture. We believe that by harnessing the potential of blockchain and smart contract technology, we can transform the agricultural insurance landscape, making it more accessible, efficient, and inclusive for farmers worldwide.",
+    "videoUrl": "/videos/farmer-rich.mp4"
+  }
+]
