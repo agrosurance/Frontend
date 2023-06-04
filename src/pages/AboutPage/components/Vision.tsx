@@ -11,17 +11,17 @@ export default function Vision() {
         </div>
         <div className="">
           <h4 className="">
-            {"Agrosurance"} envisions a future where farmers worldwide have
+            {`Agrosurance envisions a future where farmers worldwide have
             seamless access to transparent and reliable crop insurance. Through
             the utilization of advanced technologies such as blockchain and
             Chainlink, we aim to revolutionize the insurance industry and
             empower farmers to protect their livelihoods effectively. By
             simplifying the insurance process, fostering transparency, and
             promoting sustainable practices, we strive to contribute to the
-            resilience and prosperity of the global agricultural community.
+            resilience and prosperity of the global agricultural community.`}
           </h4>
           <h5 className="">
-            We aspire to create a user-friendly dApp that enables farmers to
+            {`We aspire to create a user-friendly dApp that enables farmers to
             easily manage their insurance needs, from selecting crops to
             receiving real-time quotes based on precise risk assessments. By
             leveraging blockchain's immutability, we ensure transparency and
@@ -33,7 +33,7 @@ export default function Vision() {
             decisions, invest in their operations, and thrive in an
             ever-changing world. Together, we can shape a future where
             agriculture flourishes, and farmers are equipped with the tools they
-            need to cultivate a sustainable and prosperous world.
+            need to cultivate a sustainable and prosperous world.`}
           </h5>
         </div>
       </div>
