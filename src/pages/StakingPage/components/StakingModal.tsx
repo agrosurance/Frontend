@@ -8,7 +8,7 @@ export default function StakingModal() {
   const [amount, setAmount] = useState<number>(0);
 
   return (
-    <div className="relative flex min-w-[30%] flex-col overflow-hidden rounded-xl bg-back pb-8">
+    <div className="relative flex min-w-[30%] flex-col items-center overflow-hidden rounded-xl bg-back pb-8">
       <button
         className="absolute right-4 top-4 scale-110 text-back duration-300 hover:scale-125"
         onClick={() => {
@@ -17,11 +17,11 @@ export default function StakingModal() {
       >
         <span className="material-icons">&#xe5cd;</span>
       </button>
-      <h2 className="mb-10 bg-primary py-10 text-center font-raleway text-4xl font-bold tracking-tighter text-white">
+      <h2 className="mb-10 self-stretch bg-primary py-10 text-center font-raleway text-4xl font-bold tracking-tighter text-white">
         Overview
       </h2>
-      <div className=" flex min-w-[40%] flex-col gap-y-2 rounded-2xl  px-10">
-        <h4 className="text-md font-medium">Stake</h4>
+      <h4 className="text-md mb-2 px-10 font-medium">Stake</h4>
+      <div className="flex min-w-[40%] gap-x-2 gap-y-2 rounded-2xl px-10">
         <div className="order-opacity-50 flex flex-row items-center rounded-xl border border-front">
           <span className="border border-r-front px-2 py-2 text-4xl">
             <img src="/logo.png" alt="logo" className="w-[1.5ch]" />
@@ -37,6 +37,9 @@ export default function StakingModal() {
             }}
           />
         </div>
+        <button className="w-max self-center rounded-lg border border-primary bg-primary bg-opacity-10 px-6 py-2 font-medium text-primary duration-500 hover:-translate-y-1 hover:bg-opacity-100 hover:text-background">
+          Stake
+        </button>
       </div>
       <div className="flex flex-col gap-y-2 px-10 py-8">
         <h6>You will recieve:</h6>
@@ -55,9 +58,6 @@ export default function StakingModal() {
           </div>
         </div>
       </div>
-      <button className="w-max self-center rounded-lg border border-primary bg-primary bg-opacity-10 px-6 py-2 font-medium text-primary duration-500 hover:bg-opacity-100 hover:text-background">
-        Grant
-      </button>
     </div>
   );
 }
