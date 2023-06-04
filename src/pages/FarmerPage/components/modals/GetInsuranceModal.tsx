@@ -1,6 +1,7 @@
 import useModal from "../../../../hooks/useModal";
 import MaterialIcon from "../../../../common/MaterialIcon";
 import useFetch from "../../../../hooks/useFetch";
+import { useEffect, useState } from "react";
 
 interface GetInsuranceModalProps {
   landId: number;
@@ -20,7 +21,10 @@ export default function GetInsuranceModal(props: GetInsuranceModalProps) {
         Get Insurance
       </h2>
 
-      <InitialState />
+      {/* <InitialState /> */}
+      {/* <LoadingState /> */}
+      <SuccessState />
+      {/* <FailedState /> */}
     </div>
   );
 }
@@ -38,19 +42,46 @@ function LoadingState() {
 
 function InitialState() {
   const modal = useModal();
+  const [maxDate, setMaxDate] = useState("");
+  const [minDate, setMinDate] = useState("");
+
+  useEffect(() => {
+    const today = new Date();
+    const tenDaysLater = new Date();
+    tenDaysLater.setDate(today.getDate() + 10);
+
+    const minDateStr = today.toISOString().slice(0, 10);
+    const maxDateStr = tenDaysLater.toISOString().slice(0, 10);
+
+    setMinDate(minDateStr);
+    setMaxDate(maxDateStr);
+  }, []);
 
   return (
-    <div className="mb-10 flex flex-col gap-y-4 px-10">
-      <p>How much Insurance do you want to have for this peice of land?</p>
+    <div className="mb-10 flex flex-col gap-y-6 px-10">
+      <div className="flex flex-col gap-y-2">
+        <p>How much Insurance do you want to have for this peice of land?</p>
+        <div className="flex w-full flex-row justify-between rounded-xl border border-front px-2 py-2">
+          <input
+            type="number"
+            step={1}
+            placeholder="Enter amount here"
+            className="w-full"
+          />
+          <MaterialIcon codepoint="e227" />
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-y-2">
+        <p>Till when you would like to have the Insurance?</p>
+        <div className="rounded-xl border border-front px-2 py-2">
+          <input type="date" className="w-full" max={maxDate} min={minDate} />
+        </div>
+      </div>
+
       <div className=" flex flex-row justify-around">
-        <button className="text-md w-[6ch] rounded-xl bg-blue-500 px-2 py-2 font-semibold text-white duration-300 hover:-translate-y-1 hover:brightness-110">
-          Yes
-        </button>
-        <button
-          onClick={modal.hide}
-          className="text-md w-[6ch] rounded-xl border-2 border-blue-500 px-2 py-2 font-semibold text-blue-500 duration-300 hover:-translate-y-1 hover:brightness-110"
-        >
-          No
+        <button className="text-md whitespace-nowrap rounded-xl bg-blue-500 px-2 py-2 font-semibold text-white duration-300 hover:-translate-y-1 hover:brightness-110">
+          Get Quote
         </button>
       </div>
     </div>
@@ -60,7 +91,11 @@ function InitialState() {
 function FailedState() {
   return (
     <div className="mb-10 flex flex-col gap-y-4 px-10">
-      <p>your request was declined, You can't make a claim right now.</p>
+      <p className="text-center">
+        By our Algorithm, We won't be able to provide you insurance if you grow
+        <br />
+        this crop on this land
+      </p>
       <div className=" flex flex-row justify-around">
         <div className="flex gap-x-10">
           <button className="text-md w-[6ch] rounded-xl bg-blue-500 px-2 py-2 font-semibold text-white duration-300 hover:-translate-y-1 hover:brightness-110">
@@ -83,14 +118,16 @@ function FailedState() {
 
 function SuccessState() {
   return (
-    <div className="flex flex-col items-center px-10">
+    <div className="flex flex-col items-center px-10 text-center">
       <p>
-        You can successfully claim
+        You need to pay
         <span className="mx-1 font-medium text-blue-500">{90}</span>
-        MATIC for this farmland
+        dollars for this farmland <br />
+        if you opt for a Insurance till
+        <span className="mx-1 font-medium text-blue-500">22/6/2023</span>
       </p>
       <button className="my-3 w-max rounded-lg bg-blue-500 px-6 py-2 text-white duration-300 hover:-translate-y-1 hover:saturate-150">
-        Claim
+        Confirm
       </button>
     </div>
   );
