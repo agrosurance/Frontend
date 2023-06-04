@@ -7,7 +7,7 @@ export default function Vision() {
 
       <div className="p-page relative z-1 flex flex-col items-center gap-y-3 text-center text-white drop-shadow-lg">
         <h1 className="my-8 text-7xl font-bold">OUR VISION</h1>
-        <p className="">
+        <div className="">
           AgroSurance envisions a future where farmers worldwide have seamless
           access to transparent and reliable crop insurance. Through the
           utilization of advanced technologies such as blockchain and Chainlink,
@@ -16,8 +16,8 @@ export default function Vision() {
           process, fostering transparency, and promoting sustainable practices,
           we strive to contribute to the resilience and prosperity of the global
           agricultural community.
-        </p>
-        <p className="">
+        </div>
+        <div className="">
           We aspire to create a user-friendly dApp that enables farmers to
           easily manage their insurance needs, from selecting crops to receiving
           real-time quotes based on precise risk assessments. By leveraging
@@ -31,7 +31,7 @@ export default function Vision() {
           shape a future where agriculture flourishes, and farmers are equipped
           with the tools they need to cultivate a sustainable and prosperous
           world.
-        </p>
+        </div>
       </div>
     </section>
   );
