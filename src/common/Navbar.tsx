@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 import { useForceUpdate } from "../hooks/useForceUpdate";
-import { AuthContext } from "../contexts/AuthContext";
+import { useAuthContext } from "../contexts/AuthContext";
 
 const navItems = [
   { title: "About Us", to: "/about" },
@@ -15,7 +15,7 @@ const hiddenAt = ["/auth"];
 export default function Navbar() {
   const [hideNav, setHideNav] = useState(false);
 
-  const { provider, signer, setSigner } = useContext(AuthContext);
+  const { provider, signer, setSigner } = useAuthContext();
 
   const location = useLocation();
   const navigate = useNavigate();
