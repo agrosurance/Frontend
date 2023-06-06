@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 import { useForceUpdate } from "../hooks/useForceUpdate";
+import { AuthContext } from "../contexts/AuthContext";
 
 const navItems = [
   { title: "About Us", to: "/about" },
@@ -14,11 +15,26 @@ const hiddenAt = ["/auth"];
 export default function Navbar() {
   const [hideNav, setHideNav] = useState(false);
 
+  const { provider, signer, setSigner } = useContext(AuthContext);
+
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setHideNav(hiddenAt.includes(location.pathname));
   }, [location]);
+
+  useEffect(() => {}, []);
+
+  async function connect() {
+    if (!provider) return;
+
+    await provider.send("eth_requestAccounts", []);
+    const signer = await provider.getSigner();
+    console.log(signer);
+    setSigner(signer);
+    navigate("/dashboard");
+  }
 
   return (
     <nav
@@ -39,7 +55,7 @@ export default function Navbar() {
         ))}
       </div>
       <div>
-        <Link to="/">
+        <Link to={signer ? "/dashboard" : "/"}>
           <img
             src="/brand.png"
             alt="agrosure"
@@ -55,9 +71,13 @@ export default function Navbar() {
         >
           Become a Staker
         </Link>
-        <Link to="/auth" className="btn-2 px-6 py-2 tracking-normal">
-          Get Insured
-        </Link>
+        {signer ? (
+          <>Logout</>
+        ) : (
+          <button onClick={connect} className="btn-2 px-6 py-2 tracking-normal">
+            Get Insured
+          </button>
+        )}
       </div>
     </nav>
   );

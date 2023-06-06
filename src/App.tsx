@@ -18,6 +18,7 @@ import FarmerPage from "./pages/FarmerPage/FarmerPage";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import ContactPage from "./pages/ContactPage/ContactPage";
 import { useEffect } from "react";
+import { AuthContextProvider } from "./contexts/AuthContext";
 
 export default function App() {
   const router = createBrowserRouter(
@@ -35,13 +36,12 @@ export default function App() {
 
   return (
     <GlobalContextProvider>
-      <RouterProvider router={router} />
+      <AuthContextProvider>
+        <RouterProvider router={router} />
+      </AuthContextProvider>
     </GlobalContextProvider>
   );
 }
-
-// Riya
-// 2012419177
 
 function Root() {
   const modal = useModal();
