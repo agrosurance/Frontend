@@ -5,6 +5,7 @@ import {
   Route,
   RouterProvider,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 import Footer from "./common/Footer";
 import Navbar from "./common/Navbar";
@@ -19,6 +20,9 @@ import AboutPage from "./pages/AboutPage/AboutPage";
 import ContactPage from "./pages/ContactPage/ContactPage";
 import { useEffect } from "react";
 import { AuthContextProvider } from "./contexts/AuthContext";
+import useError from "./hooks/useError";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
+import SwitchNetworkPage from "./pages/SwitchNetworkPage/SwitchNetworkPage";
 
 export default function App() {
   const router = createBrowserRouter(
@@ -30,6 +34,8 @@ export default function App() {
         <Route path="/dashboard" element={<FarmerPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/network-error" element={<SwitchNetworkPage />} />
+        <Route path="/error" element={<ErrorPage />} />
       </Route>
     )
   );
