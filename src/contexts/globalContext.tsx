@@ -15,6 +15,10 @@ interface GlobalContextType {
     modal: ReactNode;
     setModal: React.Dispatch<React.SetStateAction<React.ReactNode>>;
   };
+  errorState: {
+    error: string | null;
+    setError: React.Dispatch<React.SetStateAction<string | null>>;
+  };
 }
 
 const GlobalContext = createContext<GlobalContextType>({} as GlobalContextType);
@@ -22,6 +26,7 @@ const GlobalContext = createContext<GlobalContextType>({} as GlobalContextType);
 export function GlobalContextProvider({ children }: { children: ReactNode }) {
   const [cache, setCache] = useState<CacheType>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const [modal, setModal] = useState<ReactNode | null>();
 
@@ -63,7 +68,12 @@ export function GlobalContextProvider({ children }: { children: ReactNode }) {
     loadLocalCache();
   }, []);
 
-  const value = { cache, putCache, modalState: { modal, setModal } };
+  const value = {
+    cache,
+    putCache,
+    modalState: { modal, setModal },
+    errorState: { error, setError },
+  };
 
   return (
     <GlobalContext.Provider value={value}>

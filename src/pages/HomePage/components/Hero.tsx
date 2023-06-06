@@ -1,3 +1,5 @@
+import useError from "../../../hooks/useError";
+
 export default function Hero() {
   return (
     <section className="p-page flex">
