@@ -13,7 +13,9 @@ export default function AddLand() {
 
   const { agroSuranceLandContract } = useAuthContext();
 
-  async function addLand() {
+  async function addLand(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
     if (!agroSuranceLandContract) return;
     const name = nameRef.current?.value || "";
     const lat = ethers.utils.parseUnits(
@@ -31,6 +33,7 @@ export default function AddLand() {
 
     const tx = await agroSuranceLandContract.addLand(name, lat, long, area);
     await tx.wait(1);
+
     modal.hide();
   }
 
@@ -50,6 +53,7 @@ export default function AddLand() {
           <h2>Name</h2>
           <input
             ref={nameRef}
+            required
             type="text"
             placeholder="Enter the name of the land"
             className="w-full rounded-lg border border-solid border-front px-4 py-2 active:border"
@@ -61,7 +65,10 @@ export default function AddLand() {
             <div className="flex flex-row items-center justify-between overflow-hidden rounded-lg border border-front px-2 py-2">
               <input
                 ref={latRef}
-                step="0.001"
+                required
+                min="-90"
+                max="90"
+                step="0.000001"
                 type="number"
                 placeholder="Enter Latitude here"
               />
@@ -70,7 +77,10 @@ export default function AddLand() {
             <div className="flex flex-1 flex-row items-center justify-between overflow-hidden rounded-lg border border-front px-2 py-2">
               <input
                 ref={longRef}
-                step="0.001"
+                required
+                min="-180"
+                max="180"
+                step="0.000001"
                 type="number"
                 placeholder="Enter Latitude here"
               />
@@ -84,7 +94,10 @@ export default function AddLand() {
           <h2>Area</h2>
           <input
             ref={areaRef}
-            type="text"
+            required
+            step="0.000001"
+            min="0.000001"
+            type="number"
             className="w-full rounded-lg border border-solid border-front px-4 py-2 active:border"
             placeholder="Enter area of the land"
           />

@@ -84,31 +84,31 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     }
 
     const _agroCoinContract = new ethers.Contract(
-      process.env.VITE_AGROCOIN_CONTRACT_ADDRESS || "",
+      import.meta.env.VITE_AGROCOIN_CONTRACT_ADDRESS || "",
       agroCoinABI as any,
       signer
     ) as AgroCoin;
     setAgroCoinContract(_agroCoinContract);
     const _agroSuranceLandContract = new ethers.Contract(
-      process.env.VITE_AGROSURANCE_LAND_CONTRACT_ADDRESS || "",
+      import.meta.env.VITE_AGROSURANCE_LAND_CONTRACT_ADDRESS || "",
       agroSuranceLandABI as any,
       signer
     ) as AgroSuranceLand;
     setAgroSuranceLandContract(_agroSuranceLandContract);
     const _fundManagerContract = new ethers.Contract(
-      process.env.VITE_FUND_MANAGER_CONTRACT_ADDRESS || "",
+      import.meta.env.VITE_FUND_MANAGER_CONTRACT_ADDRESS || "",
       fundManagerABI as any,
       signer
     ) as FundManager;
     setFundManagerContract(_fundManagerContract);
     const _insuranceManagerContract = new ethers.Contract(
-      process.env.VITE_INSURANCE_MANAGER_CONTRACT_ADDRESS || "",
+      import.meta.env.VITE_INSURANCE_MANAGER_CONTRACT_ADDRESS || "",
       insuranceManagerABI as any,
       signer
     ) as InsuranceManager;
     setInsuranceManagerContract(_insuranceManagerContract);
     const _stakingManagerContract = new ethers.Contract(
-      process.env.VITE_STAKING_MANAGER_CONTRACT_ADDRESS || "",
+      import.meta.env.VITE_STAKING_MANAGER_CONTRACT_ADDRESS || "",
       stakingManagerABI as any,
       signer
     ) as StakingManager;
