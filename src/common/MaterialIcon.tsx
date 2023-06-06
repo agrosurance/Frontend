@@ -10,7 +10,7 @@ export default function MaterialIcon(props: MaterialIconProps) {
 
   useEffect(() => {
     ref.current.innerHTML = `&#x${props.codepoint};`;
-  });
+  }, []);
 
   return <span className={`material-icons ${props.className}`} ref={ref} />;
 }

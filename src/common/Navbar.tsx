@@ -24,8 +24,6 @@ export default function Navbar() {
     setHideNav(hiddenAt.includes(location.pathname));
   }, [location]);
 
-  useEffect(() => {}, []);
-
   async function connect() {
     if (!provider) return;
 
