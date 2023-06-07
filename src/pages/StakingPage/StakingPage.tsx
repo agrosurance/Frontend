@@ -36,7 +36,7 @@ export default function StakingPage() {
   const { signer, stakingManagerContract, agroCoinContract } = useAuthContext();
   const [address, setAddress] = useState<string | null>();
   const [stakedValue, setStakedValue] = useState<string>("0");
-  const [rewardRate, setRewardRate] = useState<string>("0");
+  const [monthlyReward, setMonthlyReward] = useState<string>("0");
 
   useEffect(() => {
     if (!stakingManagerContract || !signer) return;
@@ -47,7 +47,14 @@ export default function StakingPage() {
       console.log(_address);
       const stakeDetails = await stakingManagerContract.stakes(_address);
       setStakedValue(ethers.utils.formatEther(stakeDetails.amount));
-      // const _rewardRate = await stakingManagerContract.rate
+      const _rewardRateInWei = await stakingManagerContract.totalRewardRate();
+      const _totalStaked = await stakingManagerContract.totalStaked();
+      const _monthlyRewardInWei = _rewardRateInWei
+        .mul(stakeDetails.amount)
+        .mul(30 * 60 * 60 * 24)
+        .div(_totalStaked);
+      const _monthlyReward = ethers.utils.formatEther(_monthlyRewardInWei);
+      setMonthlyReward(_monthlyReward);
     })();
   }, []);
 
@@ -104,7 +111,7 @@ export default function StakingPage() {
           You're raking in about
           <span className="font-poppins text-lg text-primary">
             {" "}
-            {20} AGRO-COINs{" "}
+            {monthlyReward} AGRO-COINs{" "}
           </span>
           every months
         </p>
