@@ -301,17 +301,43 @@ export interface InsuranceManagerInterface extends utils.Interface {
   ): Result;
 
   events: {
+    "InsuranceClaimed()": EventFragment;
+    "Insured(address,uint256,bytes32)": EventFragment;
     "OwnershipTransferRequested(address,address)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
+    "QuotesRequestFulfilled(address,uint256,bytes32,uint256)": EventFragment;
+    "QuotesRequestMade(address,uint256,bytes32,uint256,uint256,uint256,uint256)": EventFragment;
     "RequestFulfilled(bytes32)": EventFragment;
     "RequestSent(bytes32)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "InsuranceClaimed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Insured"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferRequested"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "QuotesRequestFulfilled"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "QuotesRequestMade"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RequestFulfilled"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RequestSent"): EventFragment;
 }
+
+export interface InsuranceClaimedEventObject {}
+export type InsuranceClaimedEvent = TypedEvent<[], InsuranceClaimedEventObject>;
+
+export type InsuranceClaimedEventFilter =
+  TypedEventFilter<InsuranceClaimedEvent>;
+
+export interface InsuredEventObject {
+  owner: string;
+  landId: BigNumber;
+  requestId: string;
+}
+export type InsuredEvent = TypedEvent<
+  [string, BigNumber, string],
+  InsuredEventObject
+>;
+
+export type InsuredEventFilter = TypedEventFilter<InsuredEvent>;
 
 export interface OwnershipTransferRequestedEventObject {
   from: string;
@@ -336,6 +362,37 @@ export type OwnershipTransferredEvent = TypedEvent<
 
 export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
+
+export interface QuotesRequestFulfilledEventObject {
+  owner: string;
+  landId: BigNumber;
+  requestId: string;
+  premium: BigNumber;
+}
+export type QuotesRequestFulfilledEvent = TypedEvent<
+  [string, BigNumber, string, BigNumber],
+  QuotesRequestFulfilledEventObject
+>;
+
+export type QuotesRequestFulfilledEventFilter =
+  TypedEventFilter<QuotesRequestFulfilledEvent>;
+
+export interface QuotesRequestMadeEventObject {
+  owner: string;
+  landId: BigNumber;
+  requestId: string;
+  cropId: BigNumber;
+  insuranceFrom: BigNumber;
+  insuranceTo: BigNumber;
+  coverage: BigNumber;
+}
+export type QuotesRequestMadeEvent = TypedEvent<
+  [string, BigNumber, string, BigNumber, BigNumber, BigNumber, BigNumber],
+  QuotesRequestMadeEventObject
+>;
+
+export type QuotesRequestMadeEventFilter =
+  TypedEventFilter<QuotesRequestMadeEvent>;
 
 export interface RequestFulfilledEventObject {
   id: string;
@@ -730,7 +787,7 @@ export interface InsuranceManager extends BaseContract {
       coverageTill: PromiseOrValue<BigNumberish>,
       coverage: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<string>;
 
     handleOracleFulfillment(
       requestId: PromiseOrValue<BytesLike>,
@@ -830,6 +887,20 @@ export interface InsuranceManager extends BaseContract {
   };
 
   filters: {
+    "InsuranceClaimed()"(): InsuranceClaimedEventFilter;
+    InsuranceClaimed(): InsuranceClaimedEventFilter;
+
+    "Insured(address,uint256,bytes32)"(
+      owner?: PromiseOrValue<string> | null,
+      landId?: PromiseOrValue<BigNumberish> | null,
+      requestId?: PromiseOrValue<BytesLike> | null
+    ): InsuredEventFilter;
+    Insured(
+      owner?: PromiseOrValue<string> | null,
+      landId?: PromiseOrValue<BigNumberish> | null,
+      requestId?: PromiseOrValue<BytesLike> | null
+    ): InsuredEventFilter;
+
     "OwnershipTransferRequested(address,address)"(
       from?: PromiseOrValue<string> | null,
       to?: PromiseOrValue<string> | null
@@ -847,6 +918,38 @@ export interface InsuranceManager extends BaseContract {
       from?: PromiseOrValue<string> | null,
       to?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
+
+    "QuotesRequestFulfilled(address,uint256,bytes32,uint256)"(
+      owner?: PromiseOrValue<string> | null,
+      landId?: PromiseOrValue<BigNumberish> | null,
+      requestId?: PromiseOrValue<BytesLike> | null,
+      premium?: null
+    ): QuotesRequestFulfilledEventFilter;
+    QuotesRequestFulfilled(
+      owner?: PromiseOrValue<string> | null,
+      landId?: PromiseOrValue<BigNumberish> | null,
+      requestId?: PromiseOrValue<BytesLike> | null,
+      premium?: null
+    ): QuotesRequestFulfilledEventFilter;
+
+    "QuotesRequestMade(address,uint256,bytes32,uint256,uint256,uint256,uint256)"(
+      owner?: PromiseOrValue<string> | null,
+      landId?: PromiseOrValue<BigNumberish> | null,
+      requestId?: PromiseOrValue<BytesLike> | null,
+      cropId?: null,
+      insuranceFrom?: null,
+      insuranceTo?: null,
+      coverage?: null
+    ): QuotesRequestMadeEventFilter;
+    QuotesRequestMade(
+      owner?: PromiseOrValue<string> | null,
+      landId?: PromiseOrValue<BigNumberish> | null,
+      requestId?: PromiseOrValue<BytesLike> | null,
+      cropId?: null,
+      insuranceFrom?: null,
+      insuranceTo?: null,
+      coverage?: null
+    ): QuotesRequestMadeEventFilter;
 
     "RequestFulfilled(bytes32)"(
       id?: PromiseOrValue<BytesLike> | null

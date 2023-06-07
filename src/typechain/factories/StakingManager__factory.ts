@@ -37,6 +37,50 @@ const _abi = [
   {
     type: "event",
     anonymous: false,
+    name: "AmountStaked",
+    inputs: [
+      {
+        type: "address",
+        name: "staker",
+        indexed: true,
+      },
+      {
+        type: "uint256",
+        name: "amount",
+        indexed: false,
+      },
+      {
+        type: "uint256",
+        name: "balance",
+        indexed: false,
+      },
+    ],
+  },
+  {
+    type: "event",
+    anonymous: false,
+    name: "AmountUnstaked",
+    inputs: [
+      {
+        type: "address",
+        name: "staker",
+        indexed: true,
+      },
+      {
+        type: "uint256",
+        name: "amount",
+        indexed: false,
+      },
+      {
+        type: "uint256",
+        name: "balance",
+        indexed: false,
+      },
+    ],
+  },
+  {
+    type: "event",
+    anonymous: false,
     name: "OwnershipTransferred",
     inputs: [
       {
@@ -48,6 +92,35 @@ const _abi = [
         type: "address",
         name: "newOwner",
         indexed: true,
+      },
+    ],
+  },
+  {
+    type: "event",
+    anonymous: false,
+    name: "RewardClaimed",
+    inputs: [
+      {
+        type: "address",
+        name: "staker",
+        indexed: true,
+      },
+      {
+        type: "uint256",
+        name: "reward",
+        indexed: false,
+      },
+    ],
+  },
+  {
+    type: "event",
+    anonymous: false,
+    name: "RewardRateUpdated",
+    inputs: [
+      {
+        type: "uint256",
+        name: "rewardRate",
+        indexed: false,
       },
     ],
   },
@@ -81,6 +154,34 @@ const _abi = [
   },
   {
     type: "function",
+    name: "fundManager",
+    constant: true,
+    stateMutability: "view",
+    payable: false,
+    gas: 29000000,
+    inputs: [],
+    outputs: [
+      {
+        type: "address",
+      },
+    ],
+  },
+  {
+    type: "function",
+    name: "lastUpdateTime",
+    constant: true,
+    stateMutability: "view",
+    payable: false,
+    gas: 29000000,
+    inputs: [],
+    outputs: [
+      {
+        type: "uint256",
+      },
+    ],
+  },
+  {
+    type: "function",
     name: "owner",
     constant: true,
     stateMutability: "view",
@@ -101,6 +202,34 @@ const _abi = [
     gas: 29000000,
     inputs: [],
     outputs: [],
+  },
+  {
+    type: "function",
+    name: "rewardRate",
+    constant: true,
+    stateMutability: "view",
+    payable: false,
+    gas: 29000000,
+    inputs: [],
+    outputs: [
+      {
+        type: "uint256",
+      },
+    ],
+  },
+  {
+    type: "function",
+    name: "rewardToken",
+    constant: true,
+    stateMutability: "view",
+    payable: false,
+    gas: 29000000,
+    inputs: [],
+    outputs: [
+      {
+        type: "address",
+      },
+    ],
   },
   {
     type: "function",
@@ -155,6 +284,34 @@ const _abi = [
   },
   {
     type: "function",
+    name: "totalRewardRate",
+    constant: true,
+    stateMutability: "view",
+    payable: false,
+    gas: 29000000,
+    inputs: [],
+    outputs: [
+      {
+        type: "uint256",
+      },
+    ],
+  },
+  {
+    type: "function",
+    name: "totalStaked",
+    constant: true,
+    stateMutability: "view",
+    payable: false,
+    gas: 29000000,
+    inputs: [],
+    outputs: [
+      {
+        type: "uint256",
+      },
+    ],
+  },
+  {
+    type: "function",
     name: "transferOwnership",
     constant: false,
     payable: false,
@@ -191,7 +348,12 @@ const _abi = [
     constant: false,
     payable: false,
     gas: 29000000,
-    inputs: [],
+    inputs: [
+      {
+        type: "uint256",
+        name: "amount",
+      },
+    ],
     outputs: [],
   },
 ] as const;

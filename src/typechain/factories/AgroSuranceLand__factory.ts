@@ -111,6 +111,109 @@ const _abi = [
   {
     type: "event",
     anonymous: false,
+    name: "CropAdded",
+    inputs: [
+      {
+        type: "uint256",
+        name: "id",
+        indexed: true,
+      },
+      {
+        type: "string",
+        name: "name",
+        indexed: false,
+      },
+      {
+        type: "string",
+        name: "image",
+        indexed: false,
+      },
+    ],
+  },
+  {
+    type: "event",
+    anonymous: false,
+    name: "CropUpdated",
+    inputs: [
+      {
+        type: "uint256",
+        name: "id",
+        indexed: true,
+      },
+      {
+        type: "string",
+        name: "name",
+        indexed: false,
+      },
+      {
+        type: "string",
+        name: "image",
+        indexed: false,
+      },
+    ],
+  },
+  {
+    type: "event",
+    anonymous: false,
+    name: "CycleAdded",
+    inputs: [
+      {
+        type: "uint256",
+        name: "landId",
+        indexed: true,
+      },
+      {
+        type: "uint256",
+        name: "cropId",
+        indexed: true,
+      },
+      {
+        type: "uint256",
+        name: "cycleFrom",
+        indexed: false,
+      },
+      {
+        type: "uint256",
+        name: "cycleTo",
+        indexed: false,
+      },
+    ],
+  },
+  {
+    type: "event",
+    anonymous: false,
+    name: "LandAdded",
+    inputs: [
+      {
+        type: "uint256",
+        name: "landId",
+        indexed: true,
+      },
+      {
+        type: "string",
+        name: "name",
+        indexed: false,
+      },
+      {
+        type: "int32",
+        name: "lat",
+        indexed: false,
+      },
+      {
+        type: "int32",
+        name: "long",
+        indexed: false,
+      },
+      {
+        type: "uint256",
+        name: "area",
+        indexed: false,
+      },
+    ],
+  },
+  {
+    type: "event",
+    anonymous: false,
     name: "OwnershipTransferred",
     inputs: [
       {

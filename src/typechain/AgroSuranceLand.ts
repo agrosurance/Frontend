@@ -322,12 +322,20 @@ export interface AgroSuranceLandInterface extends utils.Interface {
   events: {
     "Approval(address,address,uint256)": EventFragment;
     "ApprovalForAll(address,address,bool)": EventFragment;
+    "CropAdded(uint256,string,string)": EventFragment;
+    "CropUpdated(uint256,string,string)": EventFragment;
+    "CycleAdded(uint256,uint256,uint256,uint256)": EventFragment;
+    "LandAdded(uint256,string,int32,int32,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ApprovalForAll"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "CropAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "CropUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "CycleAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "LandAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
@@ -355,6 +363,57 @@ export type ApprovalForAllEvent = TypedEvent<
 >;
 
 export type ApprovalForAllEventFilter = TypedEventFilter<ApprovalForAllEvent>;
+
+export interface CropAddedEventObject {
+  id: BigNumber;
+  name: string;
+  image: string;
+}
+export type CropAddedEvent = TypedEvent<
+  [BigNumber, string, string],
+  CropAddedEventObject
+>;
+
+export type CropAddedEventFilter = TypedEventFilter<CropAddedEvent>;
+
+export interface CropUpdatedEventObject {
+  id: BigNumber;
+  name: string;
+  image: string;
+}
+export type CropUpdatedEvent = TypedEvent<
+  [BigNumber, string, string],
+  CropUpdatedEventObject
+>;
+
+export type CropUpdatedEventFilter = TypedEventFilter<CropUpdatedEvent>;
+
+export interface CycleAddedEventObject {
+  landId: BigNumber;
+  cropId: BigNumber;
+  cycleFrom: BigNumber;
+  cycleTo: BigNumber;
+}
+export type CycleAddedEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber, BigNumber],
+  CycleAddedEventObject
+>;
+
+export type CycleAddedEventFilter = TypedEventFilter<CycleAddedEvent>;
+
+export interface LandAddedEventObject {
+  landId: BigNumber;
+  name: string;
+  lat: number;
+  long: number;
+  area: BigNumber;
+}
+export type LandAddedEvent = TypedEvent<
+  [BigNumber, string, number, number, BigNumber],
+  LandAddedEventObject
+>;
+
+export type LandAddedEventFilter = TypedEventFilter<LandAddedEvent>;
 
 export interface OwnershipTransferredEventObject {
   previousOwner: string;
@@ -994,6 +1053,56 @@ export interface AgroSuranceLand extends BaseContract {
       operator?: PromiseOrValue<string> | null,
       approved?: null
     ): ApprovalForAllEventFilter;
+
+    "CropAdded(uint256,string,string)"(
+      id?: PromiseOrValue<BigNumberish> | null,
+      name?: null,
+      image?: null
+    ): CropAddedEventFilter;
+    CropAdded(
+      id?: PromiseOrValue<BigNumberish> | null,
+      name?: null,
+      image?: null
+    ): CropAddedEventFilter;
+
+    "CropUpdated(uint256,string,string)"(
+      id?: PromiseOrValue<BigNumberish> | null,
+      name?: null,
+      image?: null
+    ): CropUpdatedEventFilter;
+    CropUpdated(
+      id?: PromiseOrValue<BigNumberish> | null,
+      name?: null,
+      image?: null
+    ): CropUpdatedEventFilter;
+
+    "CycleAdded(uint256,uint256,uint256,uint256)"(
+      landId?: PromiseOrValue<BigNumberish> | null,
+      cropId?: PromiseOrValue<BigNumberish> | null,
+      cycleFrom?: null,
+      cycleTo?: null
+    ): CycleAddedEventFilter;
+    CycleAdded(
+      landId?: PromiseOrValue<BigNumberish> | null,
+      cropId?: PromiseOrValue<BigNumberish> | null,
+      cycleFrom?: null,
+      cycleTo?: null
+    ): CycleAddedEventFilter;
+
+    "LandAdded(uint256,string,int32,int32,uint256)"(
+      landId?: PromiseOrValue<BigNumberish> | null,
+      name?: null,
+      lat?: null,
+      long?: null,
+      area?: null
+    ): LandAddedEventFilter;
+    LandAdded(
+      landId?: PromiseOrValue<BigNumberish> | null,
+      name?: null,
+      lat?: null,
+      long?: null,
+      area?: null
+    ): LandAddedEventFilter;
 
     "OwnershipTransferred(address,address)"(
       previousOwner?: PromiseOrValue<string> | null,

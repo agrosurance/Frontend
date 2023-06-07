@@ -74,6 +74,11 @@ const _abi = [
   },
   {
     type: "error",
+    name: "OnlyOneRequestEveryDay",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "QuotesExpired",
     inputs: [],
   },
@@ -101,6 +106,34 @@ const _abi = [
     type: "error",
     name: "Unauthorized",
     inputs: [],
+  },
+  {
+    type: "event",
+    anonymous: false,
+    name: "InsuranceClaimed",
+    inputs: [],
+  },
+  {
+    type: "event",
+    anonymous: false,
+    name: "Insured",
+    inputs: [
+      {
+        type: "address",
+        name: "owner",
+        indexed: true,
+      },
+      {
+        type: "uint256",
+        name: "landId",
+        indexed: true,
+      },
+      {
+        type: "bytes32",
+        name: "requestId",
+        indexed: true,
+      },
+    ],
   },
   {
     type: "event",
@@ -133,6 +166,75 @@ const _abi = [
         type: "address",
         name: "to",
         indexed: true,
+      },
+    ],
+  },
+  {
+    type: "event",
+    anonymous: false,
+    name: "QuotesRequestFulfilled",
+    inputs: [
+      {
+        type: "address",
+        name: "owner",
+        indexed: true,
+      },
+      {
+        type: "uint256",
+        name: "landId",
+        indexed: true,
+      },
+      {
+        type: "bytes32",
+        name: "requestId",
+        indexed: true,
+      },
+      {
+        type: "uint256",
+        name: "premium",
+        indexed: false,
+      },
+    ],
+  },
+  {
+    type: "event",
+    anonymous: false,
+    name: "QuotesRequestMade",
+    inputs: [
+      {
+        type: "address",
+        name: "owner",
+        indexed: true,
+      },
+      {
+        type: "uint256",
+        name: "landId",
+        indexed: true,
+      },
+      {
+        type: "bytes32",
+        name: "requestId",
+        indexed: true,
+      },
+      {
+        type: "uint256",
+        name: "cropId",
+        indexed: false,
+      },
+      {
+        type: "uint256",
+        name: "insuranceFrom",
+        indexed: false,
+      },
+      {
+        type: "uint256",
+        name: "insuranceTo",
+        indexed: false,
+      },
+      {
+        type: "uint256",
+        name: "coverage",
+        indexed: false,
       },
     ],
   },
@@ -363,7 +465,12 @@ const _abi = [
         name: "coverage",
       },
     ],
-    outputs: [],
+    outputs: [
+      {
+        type: "bytes32",
+        name: "requestId",
+      },
+    ],
   },
   {
     type: "function",

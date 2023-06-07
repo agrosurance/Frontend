@@ -32,25 +32,37 @@ export interface StakingManagerInterface extends utils.Interface {
   functions: {
     "checkUnclaimedBalance(address)": FunctionFragment;
     "claimReward()": FunctionFragment;
+    "fundManager()": FunctionFragment;
+    "lastUpdateTime()": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
+    "rewardRate()": FunctionFragment;
+    "rewardToken()": FunctionFragment;
     "setTotalRewardRate(uint256)": FunctionFragment;
     "stake()": FunctionFragment;
     "stakes(address)": FunctionFragment;
+    "totalRewardRate()": FunctionFragment;
+    "totalStaked()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "unclaimedBalance(address)": FunctionFragment;
-    "unstake()": FunctionFragment;
+    "unstake(uint256)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "checkUnclaimedBalance"
       | "claimReward"
+      | "fundManager"
+      | "lastUpdateTime"
       | "owner"
       | "renounceOwnership"
+      | "rewardRate"
+      | "rewardToken"
       | "setTotalRewardRate"
       | "stake"
       | "stakes"
+      | "totalRewardRate"
+      | "totalStaked"
       | "transferOwnership"
       | "unclaimedBalance"
       | "unstake"
@@ -64,9 +76,25 @@ export interface StakingManagerInterface extends utils.Interface {
     functionFragment: "claimReward",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "fundManager",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "lastUpdateTime",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "rewardRate",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "rewardToken",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -79,6 +107,14 @@ export interface StakingManagerInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "totalRewardRate",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "totalStaked",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [PromiseOrValue<string>]
   ): string;
@@ -86,7 +122,10 @@ export interface StakingManagerInterface extends utils.Interface {
     functionFragment: "unclaimedBalance",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(functionFragment: "unstake", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "unstake",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "checkUnclaimedBalance",
@@ -96,9 +135,22 @@ export interface StakingManagerInterface extends utils.Interface {
     functionFragment: "claimReward",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "fundManager",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "lastUpdateTime",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "rewardRate", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "rewardToken",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -107,6 +159,14 @@ export interface StakingManagerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stakes", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "totalRewardRate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "totalStaked",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
@@ -118,11 +178,43 @@ export interface StakingManagerInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
 
   events: {
+    "AmountStaked(address,uint256,uint256)": EventFragment;
+    "AmountUnstaked(address,uint256,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
+    "RewardClaimed(address,uint256)": EventFragment;
+    "RewardRateUpdated(uint256)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "AmountStaked"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AmountUnstaked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RewardClaimed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RewardRateUpdated"): EventFragment;
 }
+
+export interface AmountStakedEventObject {
+  staker: string;
+  amount: BigNumber;
+  balance: BigNumber;
+}
+export type AmountStakedEvent = TypedEvent<
+  [string, BigNumber, BigNumber],
+  AmountStakedEventObject
+>;
+
+export type AmountStakedEventFilter = TypedEventFilter<AmountStakedEvent>;
+
+export interface AmountUnstakedEventObject {
+  staker: string;
+  amount: BigNumber;
+  balance: BigNumber;
+}
+export type AmountUnstakedEvent = TypedEvent<
+  [string, BigNumber, BigNumber],
+  AmountUnstakedEventObject
+>;
+
+export type AmountUnstakedEventFilter = TypedEventFilter<AmountUnstakedEvent>;
 
 export interface OwnershipTransferredEventObject {
   previousOwner: string;
@@ -135,6 +227,28 @@ export type OwnershipTransferredEvent = TypedEvent<
 
 export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
+
+export interface RewardClaimedEventObject {
+  staker: string;
+  reward: BigNumber;
+}
+export type RewardClaimedEvent = TypedEvent<
+  [string, BigNumber],
+  RewardClaimedEventObject
+>;
+
+export type RewardClaimedEventFilter = TypedEventFilter<RewardClaimedEvent>;
+
+export interface RewardRateUpdatedEventObject {
+  rewardRate: BigNumber;
+}
+export type RewardRateUpdatedEvent = TypedEvent<
+  [BigNumber],
+  RewardRateUpdatedEventObject
+>;
+
+export type RewardRateUpdatedEventFilter =
+  TypedEventFilter<RewardRateUpdatedEvent>;
 
 export interface StakingManager extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -172,11 +286,19 @@ export interface StakingManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    fundManager(overrides?: CallOverrides): Promise<[string]>;
+
+    lastUpdateTime(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    rewardRate(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    rewardToken(overrides?: CallOverrides): Promise<[string]>;
 
     setTotalRewardRate(
       _totalRewardRate: PromiseOrValue<BigNumberish>,
@@ -198,6 +320,10 @@ export interface StakingManager extends BaseContract {
       }
     >;
 
+    totalRewardRate(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    totalStaked(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -209,6 +335,7 @@ export interface StakingManager extends BaseContract {
     ): Promise<[BigNumber]>;
 
     unstake(
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
@@ -222,11 +349,19 @@ export interface StakingManager extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  fundManager(overrides?: CallOverrides): Promise<string>;
+
+  lastUpdateTime(overrides?: CallOverrides): Promise<BigNumber>;
+
   owner(overrides?: CallOverrides): Promise<string>;
 
   renounceOwnership(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  rewardRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+  rewardToken(overrides?: CallOverrides): Promise<string>;
 
   setTotalRewardRate(
     _totalRewardRate: PromiseOrValue<BigNumberish>,
@@ -248,6 +383,10 @@ export interface StakingManager extends BaseContract {
     }
   >;
 
+  totalRewardRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+  totalStaked(overrides?: CallOverrides): Promise<BigNumber>;
+
   transferOwnership(
     newOwner: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -259,6 +398,7 @@ export interface StakingManager extends BaseContract {
   ): Promise<BigNumber>;
 
   unstake(
+    amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -270,9 +410,17 @@ export interface StakingManager extends BaseContract {
 
     claimReward(overrides?: CallOverrides): Promise<void>;
 
+    fundManager(overrides?: CallOverrides): Promise<string>;
+
+    lastUpdateTime(overrides?: CallOverrides): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    rewardRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    rewardToken(overrides?: CallOverrides): Promise<string>;
 
     setTotalRewardRate(
       _totalRewardRate: PromiseOrValue<BigNumberish>,
@@ -292,6 +440,10 @@ export interface StakingManager extends BaseContract {
       }
     >;
 
+    totalRewardRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    totalStaked(overrides?: CallOverrides): Promise<BigNumber>;
+
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -302,10 +454,35 @@ export interface StakingManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    unstake(overrides?: CallOverrides): Promise<void>;
+    unstake(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
+    "AmountStaked(address,uint256,uint256)"(
+      staker?: PromiseOrValue<string> | null,
+      amount?: null,
+      balance?: null
+    ): AmountStakedEventFilter;
+    AmountStaked(
+      staker?: PromiseOrValue<string> | null,
+      amount?: null,
+      balance?: null
+    ): AmountStakedEventFilter;
+
+    "AmountUnstaked(address,uint256,uint256)"(
+      staker?: PromiseOrValue<string> | null,
+      amount?: null,
+      balance?: null
+    ): AmountUnstakedEventFilter;
+    AmountUnstaked(
+      staker?: PromiseOrValue<string> | null,
+      amount?: null,
+      balance?: null
+    ): AmountUnstakedEventFilter;
+
     "OwnershipTransferred(address,address)"(
       previousOwner?: PromiseOrValue<string> | null,
       newOwner?: PromiseOrValue<string> | null
@@ -314,6 +491,20 @@ export interface StakingManager extends BaseContract {
       previousOwner?: PromiseOrValue<string> | null,
       newOwner?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
+
+    "RewardClaimed(address,uint256)"(
+      staker?: PromiseOrValue<string> | null,
+      reward?: null
+    ): RewardClaimedEventFilter;
+    RewardClaimed(
+      staker?: PromiseOrValue<string> | null,
+      reward?: null
+    ): RewardClaimedEventFilter;
+
+    "RewardRateUpdated(uint256)"(
+      rewardRate?: null
+    ): RewardRateUpdatedEventFilter;
+    RewardRateUpdated(rewardRate?: null): RewardRateUpdatedEventFilter;
   };
 
   estimateGas: {
@@ -326,11 +517,19 @@ export interface StakingManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    fundManager(overrides?: CallOverrides): Promise<BigNumber>;
+
+    lastUpdateTime(overrides?: CallOverrides): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    rewardRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    rewardToken(overrides?: CallOverrides): Promise<BigNumber>;
 
     setTotalRewardRate(
       _totalRewardRate: PromiseOrValue<BigNumberish>,
@@ -346,6 +545,10 @@ export interface StakingManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    totalRewardRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    totalStaked(overrides?: CallOverrides): Promise<BigNumber>;
+
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -357,6 +560,7 @@ export interface StakingManager extends BaseContract {
     ): Promise<BigNumber>;
 
     unstake(
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
@@ -371,11 +575,19 @@ export interface StakingManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    fundManager(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    lastUpdateTime(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    rewardRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    rewardToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     setTotalRewardRate(
       _totalRewardRate: PromiseOrValue<BigNumberish>,
@@ -391,6 +603,10 @@ export interface StakingManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    totalRewardRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    totalStaked(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -402,6 +618,7 @@ export interface StakingManager extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     unstake(
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
