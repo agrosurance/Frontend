@@ -86,12 +86,7 @@ export default function StakingModal() {
       <div className="flex flex-col gap-y-2 px-10 py-8">
         <h6>You will recieve:</h6>
         <div className="flex flex-row justify-center gap-x-8">
-          <div className="flex aspect-square w-[48%] flex-col items-center  justify-center rounded-full border-4 border-primary px-2 py-1 text-front">
-            <span className="text-3xl font-bold">{amount.toFixed(5)}</span>
-            <span>LMATIC</span>
-            <span className="text-xs text-front text-opacity-60">now</span>
-          </div>
-          <div className="flex aspect-square w-[48%] flex-col items-center justify-center  rounded-full border-4 border-primary px-2 py-1 text-front">
+          <div className="flex aspect-square  flex-col items-center justify-center  rounded-full border-4 border-primary px-2 py-1 text-front">
             <span className="text-3xl font-bold">
               {calculateEarning().toFixed(5)}
             </span>

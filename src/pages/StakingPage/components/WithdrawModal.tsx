@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import useFetch from "../../../hooks/useFetch";
 import MaterialIcon from "../../../common/MaterialIcon";
 import useModal from "../../../hooks/useModal";
 import { clamp } from "../../../utils";
+import { useAuthContext } from "../../../contexts/AuthContext";
+import { ethers } from "ethers";
 
 export default function WithdrawModal() {
   const [enable, loading] = useFetch<{ enabled: boolean }>("/dummy.json", {
@@ -62,6 +64,28 @@ function WithdrawState() {
   const modal = useModal();
 
   const [amount, setAmount] = useState<number>(0);
+  const amountRef = createRef<HTMLInputElement>();
+
+  const { signer, stakingManagerContract } = useAuthContext();
+
+  useEffect(() => {
+    if (!stakingManagerContract) return;
+
+    (async () => {})();
+  }, [stakingManagerContract]);
+
+  async function unstake(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!stakingManagerContract) return;
+
+    const amount = ethers.utils.parseEther(amountRef.current?.value || "0");
+
+    if (amount.eq(0)) return;
+
+    const tx = await stakingManagerContract.unstake(amount);
+    await tx.wait(1);
+    modal.hide();
+  }
 
   return (
     <div>
@@ -74,41 +98,34 @@ function WithdrawState() {
       <h2 className="mb-10 bg-secondary py-10 text-center font-raleway text-4xl font-bold tracking-tighter text-white">
         Withdraw?
       </h2>
-      <div className="flex flex-col justify-center px-6">
-        <div className="flex flex-row items-center gap-x-4">
+      <div className="flex flex-col justify-center px-6 pb-10">
+        <form
+          onSubmit={unstake}
+          className="mx-auto flex flex-row items-center gap-x-4 "
+        >
           <div className="flex flex-row items-center rounded-xl border border-front">
             <MaterialIcon
               codepoint="e8fb"
               className="w-max scale-125 self-center border border-transparent border-r-front px-1 text-4xl  text-secondary"
             />
             <input
+              required
               type="number"
+              ref={amountRef}
               placeholder="Enter the number of stakes"
-              className="text-md w-[90%] px-4"
+              className="text-md w-full px-2"
               step={0.00001}
-              min={0}
-              value={amount}
-              onChange={(e) => {
-                setAmount(clamp(Number(e.target.value), { min: 0, max: 9999 }));
-              }}
+              min={0.00001}
+              max={9999}
             />
             <span className="whitespace-nowrap border border-transparent border-l-front px-3 py-3">
-              LMATIC
+              MATIC
             </span>
           </div>
           <button className="text-md rounded-xl bg-secondary px-2 py-3 font-semibold text-back duration-300 hover:-translate-y-1 hover:brightness-110">
-            Exchange
+            Unstake
           </button>
-        </div>
-        <div className="flex flex-row justify-around py-6">
-          <div className="flex flex-col items-center gap-y-2">
-            <div className="text-xl font-semibold">You will get</div>
-            <div className="flex aspect-square flex-col items-center justify-center rounded-full border-4 border-secondary px-2 py-1 text-front">
-              <span className="text-3xl font-bold">{amount.toFixed(4)}</span>
-              <span>MATIC</span>
-            </div>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   );
