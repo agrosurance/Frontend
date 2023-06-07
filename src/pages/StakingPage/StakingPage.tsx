@@ -4,6 +4,9 @@ import { CategoryScale } from "chart.js";
 import useModal from "../../hooks/useModal";
 import StakingModal from "./components/StakingModal";
 import WithdrawModal from "./components/WithdrawModal";
+import { useAuthContext } from "../../contexts/AuthContext";
+import { useEffect, useState } from "react";
+import { ethers } from "ethers";
 
 interface Product {
   id: number;
@@ -30,6 +33,24 @@ const chartData = {
 export default function StakingPage() {
   const modal = useModal();
 
+  const { signer, stakingManagerContract, agroCoinContract } = useAuthContext();
+  const [address, setAddress] = useState<string | null>();
+  const [stakedValue, setStakedValue] = useState<string>("0");
+  const [rewardRate, setRewardRate] = useState<string>("0");
+
+  useEffect(() => {
+    if (!stakingManagerContract || !signer) return;
+
+    (async () => {
+      const _address = await signer.getAddress();
+      setAddress(_address);
+      console.log(_address);
+      const stakeDetails = await stakingManagerContract.stakes(_address);
+      setStakedValue(ethers.utils.formatEther(stakeDetails.amount));
+      // const _rewardRate = await stakingManagerContract.rate
+    })();
+  }, []);
+
   return (
     <>
       <section className="p-page">
@@ -42,7 +63,7 @@ export default function StakingPage() {
             <span className="material-icons text-3xl text-primary">
               &#xf8ff;
             </span>
-            {"0xcE7ceFc488dC178680af0D0f484356d27CB89725"}
+            {address}
           </p>
           <div className="flex items-center gap-x-6">
             <button
@@ -69,7 +90,7 @@ export default function StakingPage() {
           >
             <p>Staked Value</p>
             <h5 className="bg-gradient-to-br bg-clip-text font-poppins text-7xl text-back text-opacity-100">
-              {420.911}
+              {stakedValue}
             </h5>
             <p>MATIC</p>
           </div>
