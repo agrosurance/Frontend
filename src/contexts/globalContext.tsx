@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 type CacheType = { key: string; value: any; updated: number }[];
 
@@ -77,7 +78,7 @@ export function GlobalContextProvider({ children }: { children: ReactNode }) {
 
   return (
     <GlobalContext.Provider value={value}>
-      {!loading && children}
+      {error ? <ErrorPage></ErrorPage> : !loading && children}
     </GlobalContext.Provider>
   );
 }

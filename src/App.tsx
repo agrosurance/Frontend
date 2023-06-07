@@ -20,9 +20,9 @@ import AboutPage from "./pages/AboutPage/AboutPage";
 import ContactPage from "./pages/ContactPage/ContactPage";
 import { useEffect } from "react";
 import { AuthContextProvider } from "./contexts/AuthContext";
-import useError from "./hooks/useError";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import SwitchNetworkPage from "./pages/SwitchNetworkPage/SwitchNetworkPage";
+import useError from "./hooks/useError";
 
 export default function App() {
   const router = createBrowserRouter(

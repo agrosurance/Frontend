@@ -18,6 +18,7 @@ import agroSuranceLandABI from "../abi/AgroSuranceLand.json";
 import fundManagerABI from "../abi/FundManager.json";
 import insuranceManagerABI from "../abi/InsuranceManager.json";
 import stakingManagerABI from "../abi/StakingManager.json";
+import useError from "../hooks/useError";
 
 interface AuthContextType {
   signer: Signer | null;
@@ -50,9 +51,12 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   const [stakingManagerContract, setStakingManagerContract] =
     useState<StakingManager | null>(null);
 
+  const { throwErr } = useError();
+
   useEffect(() => {
     if (!(window as any).ethereum) {
       // TODO: Show Error
+      throwErr("Please install/upgrade Metamask");
       return;
     }
 
