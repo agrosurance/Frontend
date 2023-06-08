@@ -1,13 +1,79 @@
 import useModal from "../../../../hooks/useModal";
 import MaterialIcon from "../../../../common/MaterialIcon";
-import useFetch from "../../../../hooks/useFetch";
-import { useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
+import { useAuthContext } from "../../../../contexts/AuthContext";
+import { ethers } from "ethers";
 
 interface GetInsuranceModalProps {
   landId: number;
 }
 export default function GetInsuranceModal(props: GetInsuranceModalProps) {
   const modal = useModal();
+  const [currentState, setCurrentState] = useState<number>(0);
+  const [requestId, setRequestId] = useState("");
+  const [validTill, setValidTill] = useState(0);
+  const [premium, setPremium] = useState<ethers.BigNumber>(
+    ethers.BigNumber.from("0")
+  );
+
+  const { insuranceManagerContract, signer } = useAuthContext();
+
+  useEffect(() => {
+    if (!insuranceManagerContract || !signer) return;
+
+    (async () => {
+      const address = await signer.getAddress();
+      const totalInsurances = await insuranceManagerContract.totalInsurances(
+        props.landId
+      );
+      if (totalInsurances.eq(0)) {
+        // TODO: do not check
+        return;
+      }
+      const lastRequestId = await insuranceManagerContract.insuranceHistory(
+        props.landId,
+        totalInsurances.sub(1)
+      );
+      const lastRequest = await insuranceManagerContract.quoteRequests(
+        lastRequestId
+      );
+
+      if (lastRequest.isInsured) {
+        if (new Date(Number(lastRequest.insuranceTo) * 1000) > new Date()) {
+          // Already insured
+          modal.hide();
+        }
+      } else if (
+        Number(lastRequest.insuranceFrom) >
+        Math.round(new Date().getTime() / 1000) - 24 * 60 * 60
+      ) {
+        // last request made within last 24 hours
+        if (lastRequest.isRequestFulfilled) {
+          // stage 2
+          setRequestId(lastRequest.requestId);
+          setValidTill(Number(lastRequest.insuranceTo));
+          setPremium(lastRequest.premium);
+          setCurrentState(2);
+        } else {
+          // stage 1
+          setCurrentState(1);
+        }
+      } else {
+        // stage 0
+        setCurrentState(0);
+      }
+    })();
+  }, [insuranceManagerContract, signer]);
+
+  function getQuotes(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!insuranceManagerContract) return;
+  }
+
+  function buyInsurance() {
+    if (!insuranceManagerContract) return;
+  }
+
   return (
     <div className="relative min-w-[30%] overflow-hidden rounded-2xl bg-back">
       <button
@@ -20,10 +86,19 @@ export default function GetInsuranceModal(props: GetInsuranceModalProps) {
       <h2 className="mb-10 bg-blue-500 py-10 text-center font-raleway text-4xl font-bold tracking-tighter text-white">
         Get Insurance
       </h2>
-
+      {currentState === 0 && <InitialState landId={props.landId} />}
+      {currentState === 1 && <LoadingState />}
+      {currentState === 2 && (
+        <SuccessState
+          requestId={requestId}
+          amount={premium}
+          validTill={validTill}
+        />
+      )}
+      {currentState === 3 && <FailedState />}
       {/* <InitialState /> */}
       {/* <LoadingState /> */}
-      <SuccessState />
+      {/* <SuccessState /> */}
       {/* <FailedState /> */}
     </div>
   );
@@ -40,10 +115,12 @@ function LoadingState() {
   );
 }
 
-function InitialState() {
-  const modal = useModal();
+function InitialState({ landId }: { landId: number }) {
+  const { insuranceManagerContract } = useAuthContext();
   const [maxDate, setMaxDate] = useState("");
   const [minDate, setMinDate] = useState("");
+  const coverageRef = createRef<HTMLInputElement>();
+  const dateRef = createRef<HTMLInputElement>();
 
   useEffect(() => {
     const today = new Date();
@@ -57,14 +134,32 @@ function InitialState() {
     setMaxDate(maxDateStr);
   }, []);
 
+  async function getQuotes(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!insuranceManagerContract) return;
+    const coverage = ethers.utils.parseEther(coverageRef.current?.value || "0");
+    if (!coverage) return;
+    if (!dateRef.current || !dateRef.current.value) return;
+    const date = Math.round(new Date(dateRef.current.value).getTime() / 1000);
+    const tx = await insuranceManagerContract.getInsuranceQuotes(
+      landId,
+      date,
+      coverage
+    );
+    await tx.wait(1);
+  }
+
   return (
-    <div className="mb-10 flex flex-col gap-y-6 px-10">
+    <form onSubmit={getQuotes} className="mb-10 flex flex-col gap-y-6 px-10">
       <div className="flex flex-col gap-y-2">
         <p>How much Insurance do you want to have for this peice of land?</p>
         <div className="flex w-full flex-row justify-between rounded-xl border border-front px-2 py-2">
           <input
+            required
+            ref={coverageRef}
             type="number"
-            step={1}
+            step={0.001}
+            min={0.001}
             placeholder="Enter amount here"
             className="w-full"
           />
@@ -75,7 +170,14 @@ function InitialState() {
       <div className="flex flex-col gap-y-2">
         <p>Till when you would like to have the Insurance?</p>
         <div className="rounded-xl border border-front px-2 py-2">
-          <input type="date" className="w-full" max={maxDate} min={minDate} />
+          <input
+            type="date"
+            required
+            ref={dateRef}
+            className="w-full"
+            max={maxDate}
+            min={minDate}
+          />
         </div>
       </div>
 
@@ -84,7 +186,7 @@ function InitialState() {
           Get Quote
         </button>
       </div>
-    </div>
+    </form>
   );
 }
 
@@ -116,17 +218,46 @@ function FailedState() {
   );
 }
 
-function SuccessState() {
+function SuccessState({
+  requestId,
+  amount,
+  validTill,
+}: {
+  requestId: string;
+  amount: ethers.BigNumber;
+  validTill: number;
+}) {
+  const { insuranceManagerContract } = useAuthContext();
+  const modal = useModal();
+
+  async function buyInsurance() {
+    if (!insuranceManagerContract) return;
+
+    const tx = await insuranceManagerContract.buyInsurance(requestId, {
+      value: amount,
+    });
+    await tx.wait(1);
+    modal.hide();
+  }
+
   return (
     <div className="flex flex-col items-center px-10 text-center">
       <p>
         You need to pay
-        <span className="mx-1 font-medium text-blue-500">{90}</span>
+        <span className="mx-1 font-medium text-blue-500">
+          {ethers.utils.formatEther(amount)}
+        </span>
         dollars for this farmland <br />
         if you opt for a Insurance till
-        <span className="mx-1 font-medium text-blue-500">22/6/2023</span>
+        <span className="mx-1 font-medium text-blue-500">
+          {new Date(validTill * 1000).toLocaleDateString()}
+          {/* 22/6/2023 */}
+        </span>
       </p>
-      <button className="my-3 w-max rounded-lg bg-blue-500 px-6 py-2 text-white duration-300 hover:-translate-y-1 hover:saturate-150">
+      <button
+        onClick={buyInsurance}
+        className="my-3 w-max rounded-lg bg-blue-500 px-6 py-2 text-white duration-300 hover:-translate-y-1 hover:saturate-150"
+      >
         Confirm
       </button>
     </div>
