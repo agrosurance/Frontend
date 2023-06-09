@@ -9,28 +9,6 @@ import { useAuthContext } from "./AuthContext";
 import { InsuranceManager } from "../typechain";
 import { ethers } from "ethers";
 
-interface Land {
-  id: number;
-  name: string;
-  cropId: number;
-  area: number;
-  lat: number;
-  long: number;
-  cycleFrom: Date;
-  cycleTo: Date;
-  totalCycles: number;
-  insurance: {
-    requestId: string;
-    requestFulfilled: boolean;
-    isInsured: boolean;
-    insuredTill: Date;
-    claimRequestFulfilled: boolean;
-    claimed: boolean;
-    coverage: ethers.BigNumber;
-    premium: ethers.BigNumber;
-  } | null;
-}
-
 interface DataContextType {
   crops: Record<number, { name: string; image: string }>;
   lands: Land[];
@@ -70,7 +48,7 @@ async function checkInsuranceStatus(
   };
 }
 
-export function AuthContextProvider({ children }: { children: ReactNode }) {
+export function DataContextProvider({ children }: { children: ReactNode }) {
   const {
     address,
     agroCoinContract,

@@ -23,6 +23,7 @@ import { AuthContextProvider } from "./contexts/AuthContext";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import SwitchNetworkPage from "./pages/SwitchNetworkPage/SwitchNetworkPage";
 import useError from "./hooks/useError";
+import { DataContextProvider } from "./contexts/DataContext";
 
 export default function App() {
   const router = createBrowserRouter(
@@ -43,7 +44,9 @@ export default function App() {
   return (
     <GlobalContextProvider>
       <AuthContextProvider>
-        <RouterProvider router={router} />
+        <DataContextProvider>
+          <RouterProvider router={router} />
+        </DataContextProvider>
       </AuthContextProvider>
     </GlobalContextProvider>
   );
