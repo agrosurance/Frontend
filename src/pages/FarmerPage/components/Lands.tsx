@@ -3,13 +3,41 @@ import LandCard from "./LandCard";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
+import { InsuranceManager } from "../../../typechain";
+
+async function checkInsuranceStatus(
+  insuranceManagerContract: InsuranceManager,
+  landId: ethers.BigNumber
+) {
+  const totalInsuranceRequests = await insuranceManagerContract.totalInsurances(
+    landId
+  );
+  if (totalInsuranceRequests.eq(0)) return { isInsured: false, insuredTill: 0 };
+  const lastInsuranceRequestId =
+    await insuranceManagerContract.insuranceHistory(
+      landId,
+      totalInsuranceRequests.sub(1)
+    );
+  const lastInsuranceRequest = await insuranceManagerContract.quoteRequests(
+    lastInsuranceRequestId
+  );
+  const validity = new Date(Number(lastInsuranceRequest.insuranceTo) * 1000);
+  if (!lastInsuranceRequest.isInsured || validity <= new Date())
+    return { isInsured: false, insuredTill: 0 };
+  return {
+    isInsured: true,
+    insuredTill: validity.getTime(),
+  };
+}
 
 export default function Lands() {
-  const { agroSuranceLandContract, signer } = useAuthContext();
+  const { agroSuranceLandContract, insuranceManagerContract, signer } =
+    useAuthContext();
   const [lands, setLands] = useState<any[]>([]);
 
   useEffect(() => {
-    if (!agroSuranceLandContract || !signer) return;
+    if (!agroSuranceLandContract || !signer || !insuranceManagerContract)
+      return;
 
     (async () => {
       const address = await signer.getAddress();
@@ -23,11 +51,13 @@ export default function Lands() {
           i
         );
         const land = await agroSuranceLandContract.landDetails(landId);
+        const insurance = await checkInsuranceStatus(
+          insuranceManagerContract,
+          landId
+        );
         const landObj: Land = {
           name: land.name,
-          insurance: {
-            isInsured: false,
-          },
+          insurance,
           location: {
             latitude: Number(ethers.utils.formatUnits(land.lat, 6)),
             longitude: Number(ethers.utils.formatUnits(land.long, 6)),
@@ -46,7 +76,7 @@ export default function Lands() {
       }
       setLands(_lands);
     })();
-  }, [agroSuranceLandContract, signer]);
+  }, [agroSuranceLandContract, signer, insuranceManagerContract]);
 
   return (
     <section className="p-page flex flex-col gap-y-10">
