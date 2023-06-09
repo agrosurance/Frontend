@@ -19,6 +19,8 @@ import fundManagerABI from "../abi/FundManager.json";
 import insuranceManagerABI from "../abi/InsuranceManager.json";
 import stakingManagerABI from "../abi/StakingManager.json";
 import useError from "../hooks/useError";
+import { networkConfig } from "../config";
+import SwitchNetworkPage from "../pages/SwitchNetworkPage/SwitchNetworkPage";
 
 interface AuthContextType {
   signer: Signer | null;
@@ -50,6 +52,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     useState<InsuranceManager | null>(null);
   const [stakingManagerContract, setStakingManagerContract] =
     useState<StakingManager | null>(null);
+  const [showSwitchNetworkPage, setShowSwitchNetworkPage] = useState(false);
 
   const { throwErr } = useError();
 
@@ -74,7 +77,12 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
       if (signer) window.location.reload();
     });
 
-    (async () => {})();
+    (async () => {
+      const { chainId } = await _provider.getNetwork();
+      if (chainId != parseInt(networkConfig.chainId)) {
+        setShowSwitchNetworkPage(true);
+      }
+    })();
   }, []);
 
   useEffect(() => {
@@ -132,7 +140,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
         stakingManagerContract,
       }}
     >
-      {children}
+      {showSwitchNetworkPage ? <SwitchNetworkPage /> : children}
     </AuthContext.Provider>
   );
 }
