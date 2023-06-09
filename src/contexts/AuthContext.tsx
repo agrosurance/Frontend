@@ -31,6 +31,7 @@ interface AuthContextType {
   fundManagerContract: FundManager | null;
   insuranceManagerContract: InsuranceManager | null;
   stakingManagerContract: StakingManager | null;
+  address: string | null;
 }
 
 export const AuthContext = createContext<AuthContextType>(
@@ -53,12 +54,12 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   const [stakingManagerContract, setStakingManagerContract] =
     useState<StakingManager | null>(null);
   const [showSwitchNetworkPage, setShowSwitchNetworkPage] = useState(false);
+  const [address, setAddress] = useState<string | null>(null);
 
   const { throwErr } = useError();
 
   useEffect(() => {
     if (!(window as any).ethereum) {
-      // TODO: Show Error
       throwErr("Please install/upgrade Metamask");
       return;
     }
@@ -125,6 +126,11 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
       signer
     ) as StakingManager;
     setStakingManagerContract(_stakingManagerContract);
+
+    (async () => {
+      const _address = await signer.getAddress();
+      setAddress(_address);
+    })();
   }, [signer]);
 
   return (
@@ -138,6 +144,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
         fundManagerContract,
         insuranceManagerContract,
         stakingManagerContract,
+        address,
       }}
     >
       {showSwitchNetworkPage ? <SwitchNetworkPage /> : children}

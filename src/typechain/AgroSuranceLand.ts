@@ -324,8 +324,8 @@ export interface AgroSuranceLandInterface extends utils.Interface {
     "ApprovalForAll(address,address,bool)": EventFragment;
     "CropAdded(uint256,string,string)": EventFragment;
     "CropUpdated(uint256,string,string)": EventFragment;
-    "CycleAdded(uint256,uint256,uint256,uint256)": EventFragment;
-    "LandAdded(uint256,string,int32,int32,uint256)": EventFragment;
+    "CycleAdded(address,uint256,uint256,uint256,uint256)": EventFragment;
+    "LandAdded(address,uint256,string,int32,int32,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
@@ -389,19 +389,21 @@ export type CropUpdatedEvent = TypedEvent<
 export type CropUpdatedEventFilter = TypedEventFilter<CropUpdatedEvent>;
 
 export interface CycleAddedEventObject {
+  owner: string;
   landId: BigNumber;
   cropId: BigNumber;
   cycleFrom: BigNumber;
   cycleTo: BigNumber;
 }
 export type CycleAddedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber, BigNumber],
+  [string, BigNumber, BigNumber, BigNumber, BigNumber],
   CycleAddedEventObject
 >;
 
 export type CycleAddedEventFilter = TypedEventFilter<CycleAddedEvent>;
 
 export interface LandAddedEventObject {
+  owner: string;
   landId: BigNumber;
   name: string;
   lat: number;
@@ -409,7 +411,7 @@ export interface LandAddedEventObject {
   area: BigNumber;
 }
 export type LandAddedEvent = TypedEvent<
-  [BigNumber, string, number, number, BigNumber],
+  [string, BigNumber, string, number, number, BigNumber],
   LandAddedEventObject
 >;
 
@@ -1076,20 +1078,23 @@ export interface AgroSuranceLand extends BaseContract {
       image?: null
     ): CropUpdatedEventFilter;
 
-    "CycleAdded(uint256,uint256,uint256,uint256)"(
+    "CycleAdded(address,uint256,uint256,uint256,uint256)"(
+      owner?: PromiseOrValue<string> | null,
       landId?: PromiseOrValue<BigNumberish> | null,
       cropId?: PromiseOrValue<BigNumberish> | null,
       cycleFrom?: null,
       cycleTo?: null
     ): CycleAddedEventFilter;
     CycleAdded(
+      owner?: PromiseOrValue<string> | null,
       landId?: PromiseOrValue<BigNumberish> | null,
       cropId?: PromiseOrValue<BigNumberish> | null,
       cycleFrom?: null,
       cycleTo?: null
     ): CycleAddedEventFilter;
 
-    "LandAdded(uint256,string,int32,int32,uint256)"(
+    "LandAdded(address,uint256,string,int32,int32,uint256)"(
+      owner?: PromiseOrValue<string> | null,
       landId?: PromiseOrValue<BigNumberish> | null,
       name?: null,
       lat?: null,
@@ -1097,6 +1102,7 @@ export interface AgroSuranceLand extends BaseContract {
       area?: null
     ): LandAddedEventFilter;
     LandAdded(
+      owner?: PromiseOrValue<string> | null,
       landId?: PromiseOrValue<BigNumberish> | null,
       name?: null,
       lat?: null,

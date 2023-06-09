@@ -158,6 +158,11 @@ const _abi = [
     name: "CycleAdded",
     inputs: [
       {
+        type: "address",
+        name: "owner",
+        indexed: true,
+      },
+      {
         type: "uint256",
         name: "landId",
         indexed: true,
@@ -184,6 +189,11 @@ const _abi = [
     anonymous: false,
     name: "LandAdded",
     inputs: [
+      {
+        type: "address",
+        name: "owner",
+        indexed: true,
+      },
       {
         type: "uint256",
         name: "landId",
