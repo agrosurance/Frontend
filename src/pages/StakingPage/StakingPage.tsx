@@ -1,34 +1,9 @@
-import Graph from "./components/Graph";
-import Chart from "chart.js/auto";
-import { CategoryScale } from "chart.js";
 import useModal from "../../hooks/useModal";
 import StakingModal from "./components/StakingModal";
 import WithdrawModal from "./components/WithdrawModal";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: { rate: number; count: number };
-}
-
-Chart.register(CategoryScale);
-
-const chartData = {
-  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-  // datasets is an array of objects where each object represents a set of data to display corresponding to the labels above. for brevity, we'll keep it at one object
-  datasets: [
-    {
-      data: [55, 43, 56, 52, 38, 48],
-    },
-  ],
-};
 
 export default function StakingPage() {
   const modal = useModal();
@@ -88,9 +63,9 @@ export default function StakingPage() {
         </div>
       </section>
       <section className="p-page my-14 flex justify-between">
-        <div className="flex w-[49%] flex-col items-center rounded-[3rem] bg-foreground bg-opacity-10 p-8">
+        <div className="mx-auto flex w-[49%] flex-col  items-center rounded-[3rem] bg-foreground bg-opacity-10 p-8">
           <div
-            className="before:absolute-center pointer-events-none relative flex aspect-square min-w-[60%] flex-col items-center justify-center gap-y-3 rounded-full bg-foreground bg-opacity-70 
+            className=" before:absolute-center pointer-events-none relative flex aspect-square min-w-[60%] flex-col items-center justify-center gap-y-3 rounded-full bg-foreground bg-opacity-70 
           font-raleway text-xl font-medium tracking-tight text-back text-opacity-80 selection:hidden before:h-full before:w-full before:scale-110
           before:rounded-full before:border-[8px] before:border-primary before:content-visible"
           >
@@ -100,9 +75,6 @@ export default function StakingPage() {
             </h5>
             <p>MATIC</p>
           </div>
-        </div>
-        <div className="flex w-[49%] flex-col items-center justify-center rounded-[3rem] bg-foreground bg-opacity-10 p-8">
-          {<Graph chartData={chartData} />}
         </div>
       </section>
       <section className="p-page text-center font-raleway font-semibold tracking-tight text-primary">
