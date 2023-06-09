@@ -12,7 +12,7 @@ export default function Header() {
         <div className="flex">
           <div className="w-min pb-8 pl-10 pt-12">
             <h1 className="whitespace-nowrap text-xl font-semibold tracking-wider text-back">
-              Welcome, {"Darinda Besharam"} !
+              Welcome Back to Agrosurance
             </h1>
             <p className="my-3 text-xs font-medium text-back text-opacity-80">
               We hope you and your crops are doing absolutely wonderful ! Just
@@ -22,7 +22,7 @@ export default function Header() {
               us
             </p>
             <button className="rounded-md bg-secondary px-4 py-1 font-medium text-back shadow duration-300 hover:-translate-y-1 hover:shadow-lg hover:brightness-110">
-              Claim
+              Learn More
             </button>
           </div>
         </div>
