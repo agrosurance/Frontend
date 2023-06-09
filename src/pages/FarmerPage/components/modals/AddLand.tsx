@@ -46,7 +46,7 @@ export default function AddLand() {
         <MaterialIcon codepoint="e5cd" />
       </button>
       <h2 className="mb-10 bg-primary py-10 text-center font-raleway text-4xl font-bold tracking-tighter text-white">
-        Add Crop
+        Add Land
       </h2>
       <form onSubmit={addLand} className="flex flex-col gap-y-8 px-10 pb-10">
         <div className="flex flex-col">
@@ -62,7 +62,7 @@ export default function AddLand() {
         <div className="flex flex-col">
           <h2>Location</h2>
           <div className="flex flex-row gap-x-4">
-            <div className="flex flex-row items-center justify-between overflow-hidden rounded-lg border border-front px-2 py-2">
+            <div className="flex w-full basis-1/2 flex-row items-center justify-between overflow-hidden rounded-lg border border-front px-2 py-2">
               <input
                 ref={latRef}
                 required
@@ -71,6 +71,7 @@ export default function AddLand() {
                 step="0.000001"
                 type="number"
                 placeholder="Enter Latitude here"
+                className="basis-2/3"
               />
               <span>° N</span>
             </div>
