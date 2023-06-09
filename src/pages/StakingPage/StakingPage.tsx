@@ -44,7 +44,6 @@ export default function StakingPage() {
     (async () => {
       const _address = await signer.getAddress();
       setAddress(_address);
-      console.log(_address);
       const stakeDetails = await stakingManagerContract.stakes(_address);
       setStakedValue(ethers.utils.formatEther(stakeDetails.amount));
       const _rewardRateInWei = await stakingManagerContract.totalRewardRate();

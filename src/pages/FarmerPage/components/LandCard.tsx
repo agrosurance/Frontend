@@ -110,10 +110,10 @@ export default function LandCard(props: LandCardProps) {
         <button
           onClick={() => {
             !land.cropId
-              ? modal.show(<AddCropModal landId={props.landId} />)
+              ? modal.show(<AddCropModal landId={props.land.id} />)
               : land.insurance && land.insurance.isInsured
-              ? modal.show(<MakeClaimModal landId={props.landId} />)
-              : modal.show(<GetInsuranceModal landId={props.landId} />);
+              ? modal.show(<MakeClaimModal landId={props.land.id} />)
+              : modal.show(<GetInsuranceModal landId={props.land.id} />);
           }}
           className={`group flex aspect-square w-full flex-col items-center justify-center gap-y-5 rounded-xl bg-opacity-10 text-2xl duration-300 hover:bg-opacity-100 hover:text-background ${
             !land.cropId

@@ -3,75 +3,29 @@ import MaterialIcon from "../../../../common/MaterialIcon";
 import { createRef, useEffect, useState } from "react";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import { ethers } from "ethers";
+import { useDataContext } from "../../../../contexts/DataContext";
 
 interface GetInsuranceModalProps {
   landId: number;
 }
 export default function GetInsuranceModal(props: GetInsuranceModalProps) {
   const modal = useModal();
-  const [currentState, setCurrentState] = useState<number>(0);
-  const [requestId, setRequestId] = useState("");
-  const [validTill, setValidTill] = useState(0);
-  const [premium, setPremium] = useState<ethers.BigNumber>(
-    ethers.BigNumber.from("0")
-  );
+  const { lands } = useDataContext();
 
-  const { insuranceManagerContract, signer } = useAuthContext();
+  const land = lands.filter((land) => land.id === props.landId)[0];
 
-  useEffect(() => {
-    if (!insuranceManagerContract || !signer) return;
+  let currentState = 0;
+  if (land.insurance && land.insurance.insuredTill > new Date()) {
+    if (land.insurance.isInsured) {
+      modal.hide();
+    }
 
-    (async () => {
-      const address = await signer.getAddress();
-      const totalInsurances = await insuranceManagerContract.totalInsurances(
-        props.landId
-      );
-      if (totalInsurances.eq(0)) {
-        // TODO: do not check
-        return;
-      }
-      const lastRequestId = await insuranceManagerContract.insuranceHistory(
-        props.landId,
-        totalInsurances.sub(1)
-      );
-      const lastRequest = await insuranceManagerContract.quoteRequests(
-        lastRequestId
-      );
-
-      if (lastRequest.isInsured) {
-        if (new Date(Number(lastRequest.insuranceTo) * 1000) > new Date()) {
-          // Already insured
-          modal.hide();
-        }
-      } else if (
-        Number(lastRequest.insuranceFrom) >
-        Math.round(new Date().getTime() / 1000) - 24 * 60 * 60
-      ) {
-        // last request made within last 24 hours
-        if (lastRequest.isRequestFulfilled) {
-          // stage 2
-          setRequestId(lastRequest.requestId);
-          setValidTill(Number(lastRequest.insuranceTo));
-          setPremium(lastRequest.premium);
-          setCurrentState(2);
-        } else {
-          // stage 1
-          setCurrentState(1);
-        }
-      } else {
-        // stage 0
-        setCurrentState(0);
-      }
-    })();
-  }, [insuranceManagerContract, signer]);
-
-  function getQuotes(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!insuranceManagerContract) return;
-  }
-
-  function buyInsurance() {
-    if (!insuranceManagerContract) return;
+    if (
+      land.insurance.insuredFrom >=
+      new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
+    ) {
+      currentState = land.insurance.requestFulfilled ? 2 : 1;
+    }
   }
 
   return (
@@ -86,20 +40,10 @@ export default function GetInsuranceModal(props: GetInsuranceModalProps) {
       <h2 className="mb-10 bg-blue-500 py-10 text-center font-raleway text-4xl font-bold tracking-tighter text-white">
         Get Insurance
       </h2>
-      {currentState === 0 && <InitialState landId={props.landId} />}
+      {currentState === 0 && <InitialState land={land} />}
       {currentState === 1 && <LoadingState />}
-      {currentState === 2 && (
-        <SuccessState
-          requestId={requestId}
-          amount={premium}
-          validTill={validTill}
-        />
-      )}
+      {currentState === 2 && <SuccessState land={land} />}
       {currentState === 3 && <FailedState />}
-      {/* <InitialState /> */}
-      {/* <LoadingState /> */}
-      {/* <SuccessState /> */}
-      {/* <FailedState /> */}
     </div>
   );
 }
@@ -115,7 +59,7 @@ function LoadingState() {
   );
 }
 
-function InitialState({ landId }: { landId: number }) {
+function InitialState({ land }: { land: Land }) {
   const { insuranceManagerContract } = useAuthContext();
   const [maxDate, setMaxDate] = useState("");
   const [minDate, setMinDate] = useState("");
@@ -141,10 +85,17 @@ function InitialState({ landId }: { landId: number }) {
     if (!coverage) return;
     if (!dateRef.current || !dateRef.current.value) return;
     const date = Math.round(new Date(dateRef.current.value).getTime() / 1000);
+    const estimatedGas =
+      await insuranceManagerContract.estimateGas.getInsuranceQuotes(
+        land.id,
+        date,
+        coverage
+      );
     const tx = await insuranceManagerContract.getInsuranceQuotes(
-      landId,
+      land.id,
       date,
-      coverage
+      coverage,
+      { gasLimit: estimatedGas.mul(11).div(10) }
     );
     await tx.wait(1);
   }
@@ -218,24 +169,28 @@ function FailedState() {
   );
 }
 
-function SuccessState({
-  requestId,
-  amount,
-  validTill,
-}: {
-  requestId: string;
-  amount: ethers.BigNumber;
-  validTill: number;
-}) {
+function SuccessState({ land }: { land: Land }) {
   const { insuranceManagerContract } = useAuthContext();
   const modal = useModal();
 
   async function buyInsurance() {
     if (!insuranceManagerContract) return;
 
-    const tx = await insuranceManagerContract.buyInsurance(requestId, {
-      value: amount,
-    });
+    const estimatedGas =
+      await insuranceManagerContract.estimateGas.buyInsurance(
+        (land.insurance as any).requestId,
+        {
+          value: (land.insurance as any).premium,
+        }
+      );
+
+    const tx = await insuranceManagerContract.buyInsurance(
+      (land.insurance as any).requestId,
+      {
+        value: (land.insurance as any).premium,
+        gasLimit: estimatedGas.mul(11).div(10),
+      }
+    );
     await tx.wait(1);
     modal.hide();
   }
@@ -245,12 +200,12 @@ function SuccessState({
       <p>
         You need to pay
         <span className="mx-1 font-medium text-blue-500">
-          {ethers.utils.formatEther(amount)}
+          {ethers.utils.formatEther((land.insurance as any).premium)}
         </span>
         dollars for this farmland <br />
         if you opt for a Insurance till
         <span className="mx-1 font-medium text-blue-500">
-          {new Date(validTill * 1000).toLocaleDateString()}
+          {(land.insurance as any).insuredTill.toLocaleDateString()}
           {/* 22/6/2023 */}
         </span>
       </p>

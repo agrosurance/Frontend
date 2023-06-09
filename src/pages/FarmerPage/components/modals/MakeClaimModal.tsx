@@ -23,8 +23,8 @@ export default function MakeClaimModal(props: MakeClaimModalProps) {
       </h2>
       {/* <InitialState /> */}
       {/* <LoadingState /> */}
-      {/* <FailedState /> */}
-      <SuccessState />
+      <FailedState />
+      {/* <SuccessState /> */}
     </div>
   );
 }
@@ -62,12 +62,16 @@ function InitialState() {
 }
 
 function FailedState() {
+  const modal = useModal();
   return (
     <div className="mb-10 flex flex-col gap-y-4 px-10">
       <p>your request was declined, You can't make a claim right now.</p>
       <div className=" flex flex-row justify-around">
         <div className="flex gap-x-10">
-          <button className="text-md w-[6ch] rounded-xl bg-red-500 px-2 py-2 font-semibold text-white duration-300 hover:-translate-y-1 hover:brightness-110">
+          <button
+            onClick={() => modal.hide()}
+            className="text-md w-[6ch] rounded-xl bg-red-500 px-2 py-2 font-semibold text-white duration-300 hover:-translate-y-1 hover:brightness-110"
+          >
             Okay
           </button>
         </div>
@@ -78,7 +82,14 @@ function FailedState() {
         our judge protocol will jump into action to ensure your issue is
         resolved
       </p>
-      <button className="mr-8 w-max self-end rounded-xl border-2 border-red-500 px-4 py-1 text-sm text-red-500 duration-300 hover:border-background hover:bg-red-500 hover:text-white">
+      <button
+        onClick={() =>
+          alert(
+            "Under Construction!!! Will integrate Kleros Protocol for dispute resolution"
+          )
+        }
+        className="mr-8 w-max self-end rounded-xl border-2 border-red-500 px-4 py-1 text-sm text-red-500 duration-300 hover:border-background hover:bg-red-500 hover:text-white"
+      >
         Report
       </button>
     </div>

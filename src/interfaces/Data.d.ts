@@ -12,6 +12,7 @@ interface Land {
     requestId: string;
     requestFulfilled: boolean;
     isInsured: boolean;
+    insuredFrom: Date;
     insuredTill: Date;
     claimRequestFulfilled: boolean;
     claimed: boolean;

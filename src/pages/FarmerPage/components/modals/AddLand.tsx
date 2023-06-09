@@ -31,7 +31,15 @@ export default function AddLand() {
       6
     );
 
-    const tx = await agroSuranceLandContract.addLand(name, lat, long, area);
+    const estimatedGas = await agroSuranceLandContract.estimateGas.addLand(
+      name,
+      lat,
+      long,
+      area
+    );
+    const tx = await agroSuranceLandContract.addLand(name, lat, long, area, {
+      gasLimit: estimatedGas.mul(11).div(10),
+    });
     await tx.wait(1);
 
     modal.hide();

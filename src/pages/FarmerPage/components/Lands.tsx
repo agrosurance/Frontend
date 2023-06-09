@@ -3,6 +3,7 @@ import { useDataContext } from "../../../contexts/DataContext";
 
 export default function Lands() {
   const { lands } = useDataContext();
+  console.log(lands);
 
   return (
     <section className="p-page flex flex-col gap-y-10">

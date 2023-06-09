@@ -4,29 +4,14 @@ interface AddCropModalProps {
 import useModal from "../../../../hooks/useModal";
 import MaterialIcon from "../../../../common/MaterialIcon";
 import { useAuthContext } from "../../../../contexts/AuthContext";
-import { createRef, useEffect, useState } from "react";
+import { createRef } from "react";
+import { useDataContext } from "../../../../contexts/DataContext";
 
 export default function AddCropModal(props: AddCropModalProps) {
   const modal = useModal();
   const selectorRef = createRef<HTMLSelectElement>();
-  const [crops, setCrops] = useState<any[]>([]);
+  const { crops } = useDataContext();
   const { agroSuranceLandContract } = useAuthContext();
-
-  useEffect(() => {
-    if (!agroSuranceLandContract) return;
-
-    (async () => {
-      const _crops = [];
-      let i = 1;
-      while (true) {
-        const crop = await agroSuranceLandContract.cropDetails(i++);
-        if (crop.name == "") break;
-        const cropObj = { id: i - 1, image: crop.image, name: crop.name };
-        _crops.push(cropObj);
-      }
-      setCrops(_crops);
-    })();
-  }, [agroSuranceLandContract]);
 
   async function growCrop(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -35,11 +20,19 @@ export default function AddCropModal(props: AddCropModalProps) {
     const cropId = selectorRef.current?.value as string;
     const from = Math.round(new Date().getTime() / 1000);
     const to = from + 90 * 24 * 60 * 60;
+    const estimatedGas =
+      await agroSuranceLandContract.estimateGas.addCurrentCycle(
+        props.landId,
+        cropId,
+        from,
+        to
+      );
     const tx = await agroSuranceLandContract.addCurrentCycle(
       props.landId,
       cropId,
       from,
-      to
+      to,
+      { gasLimit: estimatedGas.mul(11).div(10) }
     );
     await tx.wait(1);
     modal.hide();
@@ -64,9 +57,9 @@ export default function AddCropModal(props: AddCropModalProps) {
             ref={selectorRef}
             className="flex-1 rounded-md border border-front border-opacity-60 px-2 py-2 text-lg"
           >
-            {crops.map((crop) => (
-              <option key={crop.id} value={crop.id} className="text-sm">
-                {crop.name}
+            {Object.keys(crops).map((cropId: any) => (
+              <option key={cropId} value={cropId} className="text-sm">
+                {crops[cropId].name}
               </option>
             ))}
           </select>

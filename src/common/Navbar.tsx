@@ -29,7 +29,6 @@ export default function Navbar() {
 
     await provider.send("eth_requestAccounts", []);
     const signer = await provider.getSigner();
-    console.log(signer);
     setSigner(signer);
     navigate("/dashboard");
   }
