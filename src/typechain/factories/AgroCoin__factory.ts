@@ -773,12 +773,12 @@ const _abi = [
 export class AgroCoin__factory {
   static readonly abi = _abi;
   static createInterface(): AgroCoinInterface {
-    return new utils.Interface(_abi) as AgroCoinInterface;
+    return new utils.Interface(_abi as any) as AgroCoinInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): AgroCoin {
-    return new Contract(address, _abi, signerOrProvider) as AgroCoin;
+    return new Contract(address, _abi as any, signerOrProvider) as AgroCoin;
   }
 }

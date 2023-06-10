@@ -361,12 +361,16 @@ const _abi = [
 export class StakingManager__factory {
   static readonly abi = _abi;
   static createInterface(): StakingManagerInterface {
-    return new utils.Interface(_abi) as StakingManagerInterface;
+    return new utils.Interface(_abi as any) as StakingManagerInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): StakingManager {
-    return new Contract(address, _abi, signerOrProvider) as StakingManager;
+    return new Contract(
+      address,
+      _abi as any,
+      signerOrProvider
+    ) as StakingManager;
   }
 }

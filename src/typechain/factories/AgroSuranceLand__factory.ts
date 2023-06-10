@@ -889,12 +889,16 @@ const _abi = [
 export class AgroSuranceLand__factory {
   static readonly abi = _abi;
   static createInterface(): AgroSuranceLandInterface {
-    return new utils.Interface(_abi) as AgroSuranceLandInterface;
+    return new utils.Interface(_abi as any) as AgroSuranceLandInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): AgroSuranceLand {
-    return new Contract(address, _abi, signerOrProvider) as AgroSuranceLand;
+    return new Contract(
+      address,
+      _abi as any,
+      signerOrProvider
+    ) as AgroSuranceLand;
   }
 }

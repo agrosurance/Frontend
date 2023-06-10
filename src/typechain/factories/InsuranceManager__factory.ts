@@ -763,12 +763,16 @@ const _abi = [
 export class InsuranceManager__factory {
   static readonly abi = _abi;
   static createInterface(): InsuranceManagerInterface {
-    return new utils.Interface(_abi) as InsuranceManagerInterface;
+    return new utils.Interface(_abi as any) as InsuranceManagerInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): InsuranceManager {
-    return new Contract(address, _abi, signerOrProvider) as InsuranceManager;
+    return new Contract(
+      address,
+      _abi as any,
+      signerOrProvider
+    ) as InsuranceManager;
   }
 }
