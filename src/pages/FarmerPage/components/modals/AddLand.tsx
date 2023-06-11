@@ -108,7 +108,7 @@ export default function AddLand() {
             min="0.000001"
             type="number"
             className="w-full rounded-lg border border-solid border-front px-4 py-2 active:border"
-            placeholder="Enter area of the land"
+            placeholder="Enter area of the land in Acre"
           />
         </div>
         <button className="btn w-max self-center rounded-md  bg-primary px-4 py-1 text-back shadow duration-300 hover:-translate-y-1 hover:shadow-lg hover:brightness-110">
