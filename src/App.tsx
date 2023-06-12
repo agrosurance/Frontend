@@ -24,6 +24,7 @@ import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import SwitchNetworkPage from "./pages/SwitchNetworkPage/SwitchNetworkPage";
 import useError from "./hooks/useError";
 import { DataContextProvider } from "./contexts/DataContext";
+import AuthRequired from "./common/AuthRequired";
 
 export default function App() {
   const router = createBrowserRouter(
@@ -31,8 +32,22 @@ export default function App() {
       <Route path="/" element={<Root />}>
         <Route index element={<HomePage />} />
         <Route path="/auth" element={<AuthPage />} />
-        <Route path="/stake" element={<StakingPage />} />
-        <Route path="/dashboard" element={<FarmerPage />} />
+        <Route
+          path="/stake"
+          element={
+            <AuthRequired>
+              <StakingPage />
+            </AuthRequired>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <AuthRequired>
+              <FarmerPage />
+            </AuthRequired>
+          }
+        />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/network-error" element={<SwitchNetworkPage />} />

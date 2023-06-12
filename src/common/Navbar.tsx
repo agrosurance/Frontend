@@ -66,19 +66,21 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="flex flex-1 items-center justify-end gap-x-14">
-        <Link
-          to="/stake"
-          className="duration-300 hover:text-primary hover:brightness-75"
-        >
-          Become a Staker
-        </Link>
+        {signer && (
+          <Link
+            to="/stake"
+            className="duration-300 hover:text-primary hover:brightness-75"
+          >
+            Become a Staker
+          </Link>
+        )}
         {signer ? (
           <span className="cursor-pointer" onClick={logout}>
             Logout
           </span>
         ) : (
           <button onClick={connect} className="btn-2 px-6 py-2 tracking-normal">
-            Get Insured
+            Connect
           </button>
         )}
       </div>
