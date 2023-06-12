@@ -14,6 +14,7 @@ interface DataContextType {
   lands: Land[];
   balance: ethers.BigNumber;
   agroCoinBalance: ethers.BigNumber;
+  unclaimedBalance: ethers.BigNumber;
 }
 
 export const DataContext = createContext<DataContextType>(
@@ -67,6 +68,9 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     ethers.BigNumber.from("0")
   );
   const [agroCoinBalance, setAgroCoinBalance] = useState<ethers.BigNumber>(
+    ethers.BigNumber.from("0")
+  );
+  const [unclaimedBalance, setUnclaimedBalance] = useState<ethers.BigNumber>(
     ethers.BigNumber.from("0")
   );
 
@@ -314,9 +318,10 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   }, [insuranceManagerContract, address, lands]);
 
   useEffect(() => {
-    if (!provider || !address) return;
+    if (!provider || !address || !stakingManagerContract) return;
 
     let oldBalance = ethers.BigNumber.from("0");
+    let oldUnclaimedBalance = ethers.BigNumber.from("0");
 
     provider.on("block", async () => {
       const _balance = await provider.getBalance(address);
@@ -324,8 +329,15 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
         oldBalance = _balance;
         setBalance(_balance);
       }
+
+      const _unclaimedBalance =
+        await stakingManagerContract.checkUnclaimedBalance(address);
+      if (!_unclaimedBalance.eq(oldUnclaimedBalance)) {
+        oldUnclaimedBalance = _unclaimedBalance;
+        setUnclaimedBalance(oldUnclaimedBalance);
+      }
     });
-  }, [provider, address]);
+  }, [stakingManagerContract, provider, address]);
 
   useEffect(() => {
     if (!agroCoinContract || !address) return;
@@ -354,7 +366,9 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   }, [agroCoinContract, address]);
 
   return (
-    <DataContext.Provider value={{ crops, lands, balance, agroCoinBalance }}>
+    <DataContext.Provider
+      value={{ crops, lands, balance, agroCoinBalance, unclaimedBalance }}
+    >
       {children}
     </DataContext.Provider>
   );

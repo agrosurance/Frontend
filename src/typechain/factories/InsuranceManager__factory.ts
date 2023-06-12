@@ -19,6 +19,10 @@ const _abi = [
         name: "_insurancePremiumCalculatorCode",
       },
       {
+        type: "string",
+        name: "_checkInsuranceStatusCode",
+      },
+      {
         type: "address",
         name: "_landsContract",
       },
@@ -34,7 +38,22 @@ const _abi = [
   },
   {
     type: "error",
+    name: "AlreadyClaimable",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "AlreadyClaimed",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "AlreadyInsured",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "AmountTransferFailed",
     inputs: [],
   },
   {
@@ -70,6 +89,16 @@ const _abi = [
   {
     type: "error",
     name: "NoInlineSecrets",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "NotClaimable",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "NotInsured",
     inputs: [],
   },
   {
@@ -110,8 +139,103 @@ const _abi = [
   {
     type: "event",
     anonymous: false,
+    name: "CheckClaimRequestFulfilled",
+    inputs: [
+      {
+        type: "address",
+        name: "owner",
+        indexed: true,
+      },
+      {
+        type: "uint256",
+        name: "landId",
+        indexed: true,
+      },
+      {
+        type: "bytes32",
+        name: "requestId",
+        indexed: true,
+      },
+      {
+        type: "bytes32",
+        name: "claimRequestId",
+        indexed: false,
+      },
+      {
+        type: "bool",
+        name: "isClaimable",
+        indexed: false,
+      },
+    ],
+  },
+  {
+    type: "event",
+    anonymous: false,
+    name: "CheckClaimRequestMade",
+    inputs: [
+      {
+        type: "address",
+        name: "owner",
+        indexed: true,
+      },
+      {
+        type: "uint256",
+        name: "landId",
+        indexed: true,
+      },
+      {
+        type: "bytes32",
+        name: "requestId",
+        indexed: true,
+      },
+      {
+        type: "uint256",
+        name: "cropId",
+        indexed: false,
+      },
+      {
+        type: "uint256",
+        name: "insuranceFrom",
+        indexed: false,
+      },
+      {
+        type: "uint256",
+        name: "insuranceTo",
+        indexed: false,
+      },
+      {
+        type: "bytes32",
+        name: "claimRequestId",
+        indexed: false,
+      },
+    ],
+  },
+  {
+    type: "event",
+    anonymous: false,
     name: "InsuranceClaimed",
-    inputs: [],
+    inputs: [
+      {
+        type: "address",
+        name: "owner",
+        indexed: true,
+      },
+      {
+        type: "uint256",
+        name: "landId",
+        indexed: true,
+      },
+      {
+        type: "bytes32",
+        name: "requestId",
+        indexed: true,
+      },
+      {
+        type: "uint256",
+        name: "amount",
+        indexed: false,
+      },
+    ],
   },
   {
     type: "event",
@@ -334,6 +458,25 @@ const _abi = [
   },
   {
     type: "function",
+    name: "checkInsuranceStatus",
+    constant: false,
+    payable: false,
+    gas: 29000000,
+    inputs: [
+      {
+        type: "bytes32",
+        name: "requestId",
+      },
+    ],
+    outputs: [
+      {
+        type: "bytes32",
+        name: "claimRequestId",
+      },
+    ],
+  },
+  {
+    type: "function",
     name: "checkInsuranceStatusCode",
     constant: true,
     stateMutability: "view",
@@ -359,6 +502,24 @@ const _abi = [
       },
     ],
     outputs: [],
+  },
+  {
+    type: "function",
+    name: "claimRequestToQuoteRequest",
+    constant: true,
+    stateMutability: "view",
+    payable: false,
+    gas: 29000000,
+    inputs: [
+      {
+        type: "bytes32",
+      },
+    ],
+    outputs: [
+      {
+        type: "bytes32",
+      },
+    ],
   },
   {
     type: "function",
@@ -579,6 +740,26 @@ const _abi = [
         name: "owner",
       },
       {
+        type: "bool",
+        name: "isRequestFulfilled",
+      },
+      {
+        type: "bool",
+        name: "isCheckClaimRequestFulfilled",
+      },
+      {
+        type: "bool",
+        name: "isInsured",
+      },
+      {
+        type: "bool",
+        name: "isInsuranceClaimable",
+      },
+      {
+        type: "bool",
+        name: "isInsuranceClaimed",
+      },
+      {
         type: "uint256",
         name: "landId",
       },
@@ -603,24 +784,12 @@ const _abi = [
         name: "insuranceTo",
       },
       {
-        type: "bool",
-        name: "isRequestFulfilled",
-      },
-      {
-        type: "bytes",
-        name: "latestResponse",
+        type: "uint256",
+        name: "insuranceStatusRequestTime",
       },
       {
         type: "bytes",
         name: "latestError",
-      },
-      {
-        type: "bool",
-        name: "isInsured",
-      },
-      {
-        type: "bool",
-        name: "isInsuranceClaimed",
       },
     ],
   },
@@ -680,6 +849,20 @@ const _abi = [
       {
         type: "uint64",
         name: "_chainlinkSubscriptionId",
+      },
+    ],
+    outputs: [],
+  },
+  {
+    type: "function",
+    name: "setCheckInsuranceStatusCode",
+    constant: false,
+    payable: false,
+    gas: 29000000,
+    inputs: [
+      {
+        type: "string",
+        name: "_checkInsuranceStatusCode",
       },
     ],
     outputs: [],

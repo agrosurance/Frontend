@@ -35,8 +35,10 @@ export interface InsuranceManagerInterface extends utils.Interface {
     "buyInsurance(bytes32)": FunctionFragment;
     "chainlinkFunctionGasLimit()": FunctionFragment;
     "chainlinkSubscriptionId()": FunctionFragment;
+    "checkInsuranceStatus(bytes32)": FunctionFragment;
     "checkInsuranceStatusCode()": FunctionFragment;
     "claim(bytes32)": FunctionFragment;
+    "claimRequestToQuoteRequest(bytes32)": FunctionFragment;
     "estimateCost((uint8,uint8,uint8,string,bytes,string[]),uint64,uint32,uint256)": FunctionFragment;
     "fundManager()": FunctionFragment;
     "getDONPublicKey()": FunctionFragment;
@@ -51,6 +53,7 @@ export interface InsuranceManagerInterface extends utils.Interface {
     "secrets()": FunctionFragment;
     "setChainlinkFunctionGasLimit(uint32)": FunctionFragment;
     "setChainlinkSubscriptionId(uint64)": FunctionFragment;
+    "setCheckInsuranceStatusCode(string)": FunctionFragment;
     "setInsurancePremiumCalculatorCode(string)": FunctionFragment;
     "setSecrets(bytes)": FunctionFragment;
     "totalInsurances(uint256)": FunctionFragment;
@@ -65,8 +68,10 @@ export interface InsuranceManagerInterface extends utils.Interface {
       | "buyInsurance"
       | "chainlinkFunctionGasLimit"
       | "chainlinkSubscriptionId"
+      | "checkInsuranceStatus"
       | "checkInsuranceStatusCode"
       | "claim"
+      | "claimRequestToQuoteRequest"
       | "estimateCost"
       | "fundManager"
       | "getDONPublicKey"
@@ -81,6 +86,7 @@ export interface InsuranceManagerInterface extends utils.Interface {
       | "secrets"
       | "setChainlinkFunctionGasLimit"
       | "setChainlinkSubscriptionId"
+      | "setCheckInsuranceStatusCode"
       | "setInsurancePremiumCalculatorCode"
       | "setSecrets"
       | "totalInsurances"
@@ -109,11 +115,19 @@ export interface InsuranceManagerInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "checkInsuranceStatus",
+    values: [PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "checkInsuranceStatusCode",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "claim",
+    values: [PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "claimRequestToQuoteRequest",
     values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
@@ -187,6 +201,10 @@ export interface InsuranceManagerInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "setCheckInsuranceStatusCode",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setInsurancePremiumCalculatorCode",
     values: [PromiseOrValue<string>]
   ): string;
@@ -228,10 +246,18 @@ export interface InsuranceManagerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "checkInsuranceStatus",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "checkInsuranceStatusCode",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "claimRequestToQuoteRequest",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "estimateCost",
     data: BytesLike
@@ -283,6 +309,10 @@ export interface InsuranceManagerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setCheckInsuranceStatusCode",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setInsurancePremiumCalculatorCode",
     data: BytesLike
   ): Result;
@@ -301,7 +331,9 @@ export interface InsuranceManagerInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "InsuranceClaimed()": EventFragment;
+    "CheckClaimRequestFulfilled(address,uint256,bytes32,bytes32,bool)": EventFragment;
+    "CheckClaimRequestMade(address,uint256,bytes32,uint256,uint256,uint256,bytes32)": EventFragment;
+    "InsuranceClaimed(address,uint256,bytes32,uint256)": EventFragment;
     "Insured(address,uint256,bytes32)": EventFragment;
     "OwnershipTransferRequested(address,address)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
@@ -311,6 +343,8 @@ export interface InsuranceManagerInterface extends utils.Interface {
     "RequestSent(bytes32)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "CheckClaimRequestFulfilled"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "CheckClaimRequestMade"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "InsuranceClaimed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Insured"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferRequested"): EventFragment;
@@ -321,8 +355,48 @@ export interface InsuranceManagerInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "RequestSent"): EventFragment;
 }
 
-export interface InsuranceClaimedEventObject {}
-export type InsuranceClaimedEvent = TypedEvent<[], InsuranceClaimedEventObject>;
+export interface CheckClaimRequestFulfilledEventObject {
+  owner: string;
+  landId: BigNumber;
+  requestId: string;
+  claimRequestId: string;
+  isClaimable: boolean;
+}
+export type CheckClaimRequestFulfilledEvent = TypedEvent<
+  [string, BigNumber, string, string, boolean],
+  CheckClaimRequestFulfilledEventObject
+>;
+
+export type CheckClaimRequestFulfilledEventFilter =
+  TypedEventFilter<CheckClaimRequestFulfilledEvent>;
+
+export interface CheckClaimRequestMadeEventObject {
+  owner: string;
+  landId: BigNumber;
+  requestId: string;
+  cropId: BigNumber;
+  insuranceFrom: BigNumber;
+  insuranceTo: BigNumber;
+  claimRequestId: string;
+}
+export type CheckClaimRequestMadeEvent = TypedEvent<
+  [string, BigNumber, string, BigNumber, BigNumber, BigNumber, string],
+  CheckClaimRequestMadeEventObject
+>;
+
+export type CheckClaimRequestMadeEventFilter =
+  TypedEventFilter<CheckClaimRequestMadeEvent>;
+
+export interface InsuranceClaimedEventObject {
+  owner: string;
+  landId: BigNumber;
+  requestId: string;
+  amount: BigNumber;
+}
+export type InsuranceClaimedEvent = TypedEvent<
+  [string, BigNumber, string, BigNumber],
+  InsuranceClaimedEventObject
+>;
 
 export type InsuranceClaimedEventFilter =
   TypedEventFilter<InsuranceClaimedEvent>;
@@ -458,12 +532,22 @@ export interface InsuranceManager extends BaseContract {
 
     chainlinkSubscriptionId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    checkInsuranceStatus(
+      requestId: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     checkInsuranceStatusCode(overrides?: CallOverrides): Promise<[string]>;
 
     claim(
       requestId: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    claimRequestToQuoteRequest(
+      arg0: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     estimateCost(
       req: {
@@ -519,31 +603,35 @@ export interface InsuranceManager extends BaseContract {
       [
         string,
         string,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber,
         boolean,
-        string,
-        string,
         boolean,
-        boolean
+        boolean,
+        boolean,
+        boolean,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        string
       ] & {
         requestId: string;
         owner: string;
+        isRequestFulfilled: boolean;
+        isCheckClaimRequestFulfilled: boolean;
+        isInsured: boolean;
+        isInsuranceClaimable: boolean;
+        isInsuranceClaimed: boolean;
         landId: BigNumber;
         premium: BigNumber;
         coverage: BigNumber;
         cropId: BigNumber;
         insuranceFrom: BigNumber;
         insuranceTo: BigNumber;
-        isRequestFulfilled: boolean;
-        latestResponse: string;
+        insuranceStatusRequestTime: BigNumber;
         latestError: string;
-        isInsured: boolean;
-        isInsuranceClaimed: boolean;
       }
     >;
 
@@ -561,6 +649,11 @@ export interface InsuranceManager extends BaseContract {
 
     setChainlinkSubscriptionId(
       _chainlinkSubscriptionId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setCheckInsuranceStatusCode(
+      _checkInsuranceStatusCode: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -609,12 +702,22 @@ export interface InsuranceManager extends BaseContract {
 
   chainlinkSubscriptionId(overrides?: CallOverrides): Promise<BigNumber>;
 
+  checkInsuranceStatus(
+    requestId: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   checkInsuranceStatusCode(overrides?: CallOverrides): Promise<string>;
 
   claim(
     requestId: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  claimRequestToQuoteRequest(
+    arg0: PromiseOrValue<BytesLike>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   estimateCost(
     req: {
@@ -668,31 +771,35 @@ export interface InsuranceManager extends BaseContract {
     [
       string,
       string,
-      BigNumber,
-      BigNumber,
-      BigNumber,
-      BigNumber,
-      BigNumber,
-      BigNumber,
       boolean,
-      string,
-      string,
       boolean,
-      boolean
+      boolean,
+      boolean,
+      boolean,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      string
     ] & {
       requestId: string;
       owner: string;
+      isRequestFulfilled: boolean;
+      isCheckClaimRequestFulfilled: boolean;
+      isInsured: boolean;
+      isInsuranceClaimable: boolean;
+      isInsuranceClaimed: boolean;
       landId: BigNumber;
       premium: BigNumber;
       coverage: BigNumber;
       cropId: BigNumber;
       insuranceFrom: BigNumber;
       insuranceTo: BigNumber;
-      isRequestFulfilled: boolean;
-      latestResponse: string;
+      insuranceStatusRequestTime: BigNumber;
       latestError: string;
-      isInsured: boolean;
-      isInsuranceClaimed: boolean;
     }
   >;
 
@@ -710,6 +817,11 @@ export interface InsuranceManager extends BaseContract {
 
   setChainlinkSubscriptionId(
     _chainlinkSubscriptionId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setCheckInsuranceStatusCode(
+    _checkInsuranceStatusCode: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -756,12 +868,22 @@ export interface InsuranceManager extends BaseContract {
 
     chainlinkSubscriptionId(overrides?: CallOverrides): Promise<BigNumber>;
 
+    checkInsuranceStatus(
+      requestId: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
     checkInsuranceStatusCode(overrides?: CallOverrides): Promise<string>;
 
     claim(
       requestId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    claimRequestToQuoteRequest(
+      arg0: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     estimateCost(
       req: {
@@ -815,31 +937,35 @@ export interface InsuranceManager extends BaseContract {
       [
         string,
         string,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber,
         boolean,
-        string,
-        string,
         boolean,
-        boolean
+        boolean,
+        boolean,
+        boolean,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        string
       ] & {
         requestId: string;
         owner: string;
+        isRequestFulfilled: boolean;
+        isCheckClaimRequestFulfilled: boolean;
+        isInsured: boolean;
+        isInsuranceClaimable: boolean;
+        isInsuranceClaimed: boolean;
         landId: BigNumber;
         premium: BigNumber;
         coverage: BigNumber;
         cropId: BigNumber;
         insuranceFrom: BigNumber;
         insuranceTo: BigNumber;
-        isRequestFulfilled: boolean;
-        latestResponse: string;
+        insuranceStatusRequestTime: BigNumber;
         latestError: string;
-        isInsured: boolean;
-        isInsuranceClaimed: boolean;
       }
     >;
 
@@ -857,6 +983,11 @@ export interface InsuranceManager extends BaseContract {
 
     setChainlinkSubscriptionId(
       _chainlinkSubscriptionId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setCheckInsuranceStatusCode(
+      _checkInsuranceStatusCode: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -887,8 +1018,52 @@ export interface InsuranceManager extends BaseContract {
   };
 
   filters: {
-    "InsuranceClaimed()"(): InsuranceClaimedEventFilter;
-    InsuranceClaimed(): InsuranceClaimedEventFilter;
+    "CheckClaimRequestFulfilled(address,uint256,bytes32,bytes32,bool)"(
+      owner?: PromiseOrValue<string> | null,
+      landId?: PromiseOrValue<BigNumberish> | null,
+      requestId?: PromiseOrValue<BytesLike> | null,
+      claimRequestId?: null,
+      isClaimable?: null
+    ): CheckClaimRequestFulfilledEventFilter;
+    CheckClaimRequestFulfilled(
+      owner?: PromiseOrValue<string> | null,
+      landId?: PromiseOrValue<BigNumberish> | null,
+      requestId?: PromiseOrValue<BytesLike> | null,
+      claimRequestId?: null,
+      isClaimable?: null
+    ): CheckClaimRequestFulfilledEventFilter;
+
+    "CheckClaimRequestMade(address,uint256,bytes32,uint256,uint256,uint256,bytes32)"(
+      owner?: PromiseOrValue<string> | null,
+      landId?: PromiseOrValue<BigNumberish> | null,
+      requestId?: PromiseOrValue<BytesLike> | null,
+      cropId?: null,
+      insuranceFrom?: null,
+      insuranceTo?: null,
+      claimRequestId?: null
+    ): CheckClaimRequestMadeEventFilter;
+    CheckClaimRequestMade(
+      owner?: PromiseOrValue<string> | null,
+      landId?: PromiseOrValue<BigNumberish> | null,
+      requestId?: PromiseOrValue<BytesLike> | null,
+      cropId?: null,
+      insuranceFrom?: null,
+      insuranceTo?: null,
+      claimRequestId?: null
+    ): CheckClaimRequestMadeEventFilter;
+
+    "InsuranceClaimed(address,uint256,bytes32,uint256)"(
+      owner?: PromiseOrValue<string> | null,
+      landId?: PromiseOrValue<BigNumberish> | null,
+      requestId?: PromiseOrValue<BytesLike> | null,
+      amount?: null
+    ): InsuranceClaimedEventFilter;
+    InsuranceClaimed(
+      owner?: PromiseOrValue<string> | null,
+      landId?: PromiseOrValue<BigNumberish> | null,
+      requestId?: PromiseOrValue<BytesLike> | null,
+      amount?: null
+    ): InsuranceClaimedEventFilter;
 
     "Insured(address,uint256,bytes32)"(
       owner?: PromiseOrValue<string> | null,
@@ -984,11 +1159,21 @@ export interface InsuranceManager extends BaseContract {
 
     chainlinkSubscriptionId(overrides?: CallOverrides): Promise<BigNumber>;
 
+    checkInsuranceStatus(
+      requestId: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     checkInsuranceStatusCode(overrides?: CallOverrides): Promise<BigNumber>;
 
     claim(
       requestId: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    claimRequestToQuoteRequest(
+      arg0: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     estimateCost(
@@ -1060,6 +1245,11 @@ export interface InsuranceManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    setCheckInsuranceStatusCode(
+      _checkInsuranceStatusCode: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     setInsurancePremiumCalculatorCode(
       _insurancePremiumCalculatorCode: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1110,6 +1300,11 @@ export interface InsuranceManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    checkInsuranceStatus(
+      requestId: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     checkInsuranceStatusCode(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -1117,6 +1312,11 @@ export interface InsuranceManager extends BaseContract {
     claim(
       requestId: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    claimRequestToQuoteRequest(
+      arg0: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     estimateCost(
@@ -1185,6 +1385,11 @@ export interface InsuranceManager extends BaseContract {
 
     setChainlinkSubscriptionId(
       _chainlinkSubscriptionId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setCheckInsuranceStatusCode(
+      _checkInsuranceStatusCode: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
