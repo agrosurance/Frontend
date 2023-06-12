@@ -6,7 +6,7 @@ import { useAuthContext } from "../contexts/AuthContext";
 
 const navItems = [
   { title: "About Us", to: "/about" },
-  { title: "How it works", to: "/dashboard" },
+  // { title: "How it works", to: "/dashboard" },
   { title: "Contact", to: "/contact" },
 ];
 
@@ -31,6 +31,10 @@ export default function Navbar() {
     const signer = await provider.getSigner();
     setSigner(signer);
     navigate("/dashboard");
+  }
+
+  async function logout() {
+    setSigner(null);
   }
 
   return (
@@ -69,7 +73,9 @@ export default function Navbar() {
           Become a Staker
         </Link>
         {signer ? (
-          <>Logout</>
+          <span className="cursor-pointer" onClick={logout}>
+            Logout
+          </span>
         ) : (
           <button onClick={connect} className="btn-2 px-6 py-2 tracking-normal">
             Get Insured
