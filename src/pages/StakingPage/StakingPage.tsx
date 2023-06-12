@@ -20,6 +20,7 @@ export default function StakingPage() {
       const _address = await signer.getAddress();
       setAddress(_address);
       const stakeDetails = await stakingManagerContract.stakes(_address);
+      if (stakeDetails.amount.eq(0)) return;
       setStakedValue(ethers.utils.formatEther(stakeDetails.amount));
       const _rewardRateInWei = await stakingManagerContract.totalRewardRate();
       const _totalStaked = await stakingManagerContract.totalStaked();
